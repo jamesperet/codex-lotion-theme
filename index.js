@@ -13,7 +13,8 @@ class LotionTheme {
     {
       var files = [
         "node_modules/bootstrap/dist/css/bootstrap.min.css",
-        "node_modules/bootstrap/dist/css/bootstrap.bundle.min.js"
+        "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+        "node_modules/vue/dist/vue.js"
       ]
       for (let i = 0; i < files.length; i++) {
         var _this = this;
