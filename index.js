@@ -13,8 +13,12 @@ class LotionTheme {
     {
       var files = [
         "node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "node_modules/bootstrap/dist/css/bootstrap.min.css.map",
         "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-        "node_modules/vue/dist/vue.js"
+        "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+        "node_modules/vue/dist/vue.js",
+        "node_modules/vue-loader/dist/templateLoader.js",
+        "views/vue/markdown-view.vue"
       ]
       for (let i = 0; i < files.length; i++) {
         var _this = this;
