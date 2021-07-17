@@ -12,12 +12,37 @@
     <style>
         body {
             background-color: #2f3437;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
+            color: rgba(235, 235, 235, 1);
+            font-size: 1em;
             line-height: 1.2;
         }
+        p, li { color: rgba(190, 190, 190, 1); }
         .bg-dark {
             background-color: #2f3437!important;
+        }
+        a {
+            color: rgb(210, 210, 210);
+            text-decoration: underline;
+        }
+        a:hover {
+            color: rgb(170, 170, 170);
+        }
+        .badge-link {
+            display: inline-block;
+            padding: 4px;
+            font-size: 0.9em;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: .25rem;
+            margin-top: -4px;
+        }
+        .badge-link:hover { 
+            color: #fff;
+            background-color: rgb(89, 95, 99)!important 
+        }
+        .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+            margin-top: 15px;
         }
     </style>
   </head>
@@ -72,16 +97,7 @@
                 <div class="container-fluid" style="position: fixed; top: 0; padding-left: 0; margin-left: -12px;">
                     <nav class="navbar navbar-expand-md navbar-dark bg-dark" >
                         <div class="container-fluid" style="padding-left: 12px;">
-                            
-                            <nav style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb">
-                                <ol class="breadcrumb" style="margin-bottom: 4px; margin-top: 4px;">
-                                  <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                  <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
-                                  <li class="breadcrumb-item active" aria-current="page"><a href="#">Files</a></li>
-                                  <li class="breadcrumb-item active" aria-current="page"><a href="#">example-file-test.md</a></li>
-                                </ol>
-                              </nav>
-                                
+                            <breadcrumbs></breadcrumbs>
                         </div>
                     </nav>
                 </div>
@@ -102,7 +118,8 @@
 
     <script type="text/javascript">
         var components = {
-            "MarkdownView" : httpVueLoader('/markdown-view.vue')
+            "MarkdownView" : httpVueLoader('/markdown-view.vue'),
+            "Breadcrumbs" : httpVueLoader('/breadcrumbs.vue')
         }
         const router = new VueRouter({
             mode: 'history',
@@ -110,6 +127,7 @@
                 { path: '*.md', component: components.MarkdownView }
             ]
         })
+        var bus = new Vue();
         Vue.use(VueRouter)
         new Vue({
             el: '#my-app',

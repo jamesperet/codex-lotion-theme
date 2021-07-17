@@ -18,7 +18,8 @@ class LotionTheme {
         "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map",
         "node_modules/vue/dist/vue.js",
         "node_modules/vue-router/dist/vue-router.min.js",
-        "views/vue/markdown-view.vue"
+        "views/vue/markdown-view.vue",
+        "views/vue/breadcrumbs.vue"
       ]
       for (let i = 0; i < files.length; i++) {
         var _this = this;

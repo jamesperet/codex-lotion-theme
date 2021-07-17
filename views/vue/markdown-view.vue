@@ -3,7 +3,6 @@
 </template>
 
 <script>
-var bus = new Vue();
 module.exports = {
     name: "MarkdownView",
     data: function () {
@@ -36,6 +35,7 @@ module.exports = {
             axios.get(link).then(response => {
                 this.module_data = response.data.body;
                 bus.$emit('updated-links');
+                bus.$emit('updated-breadcrumbs');
             });
         },
         updateLinks: function() {
