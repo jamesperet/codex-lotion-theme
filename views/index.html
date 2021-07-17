@@ -87,8 +87,7 @@
                 </div>
                 <div class="row justify-content-center" style="padding-top: 50px;">
                     <div class="col-9">
-                        <markdown-view></markdown-view>
-                        <%- body %>
+                        <router-view></router-view>
                     </div>
                 </div>
             </div>
@@ -97,24 +96,33 @@
         
     <script src="/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>
     <script src="/vue.js"  crossorigin="anonymous"></script>
+    <script src="/vue-router.min.js"  crossorigin="anonymous"></script>
     <script src="https://unpkg.com/http-vue-loader"  crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script type="text/javascript">
         var components = {
-            "markdown-view" : httpVueLoader('/markdown-view.vue')
+            "MarkdownView" : httpVueLoader('/markdown-view.vue')
         }
-        
+        const router = new VueRouter({
+            mode: 'history',
+            routes: [
+                { path: '*.md', component: components.MarkdownView }
+            ]
+        })
+        Vue.use(VueRouter)
         new Vue({
-          el: '#my-app',
-          components: components,
-          data: function () {
-            return {
-                
-            }
-          },
-          methods: {
+            el: '#my-app',
+            components: components,
+            mode: 'history',
+            router,
+            data: function () {
+                    return {  
+                }
+            },
+            methods: {
             
-          }
+            }
         });
       </script> 
 
