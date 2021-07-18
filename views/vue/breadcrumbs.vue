@@ -30,7 +30,7 @@ module.exports = {
     methods: {
         setBreadcrumb: function() {
             this.breadcrumbs = [];
-            var route = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "");
+            var route = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "").replace("#", "");
             console.log("route: " + route);
             var list = route.split("/");
             var link = "";

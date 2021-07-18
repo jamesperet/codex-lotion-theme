@@ -63,8 +63,11 @@ module.exports = {
             if(event.target.host == window.location.host){
                 event.preventDefault();
                 var route = event.target.href.replace(window.location.host, "").replace("http://", "").replace("https://", "");
-                router.push({path: route});
-                bus.$emit('updated-content');
+                var window_location = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "");
+                if(route != window_location){
+                    router.push({path: route});
+                    bus.$emit('updated-content');
+                }
             }
             //console.log(event);
         }

@@ -44,54 +44,61 @@
         .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
             margin-top: 15px;
         }
+        .sidebar .list-group-item {
+            background-color: transparent;
+            border-width: 0 0 0px;
+            color: rgb(170, 170, 170);
+            font-size: 0.9em;
+            font-weight: 400;
+            padding: .3rem 1rem;
+        }
+        .sidebar .list-group-item:hover {
+            background-color: rgb(89, 95, 99)!important 
+        }
+        .sidebar .divider-text {
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            font-size: 11.5px;
+            line-height: 1;
+            margin-bottom: 1px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 600;
+            transition: color 100ms ease-out 0s;
+            padding-left: 1rem;
+            padding-right: .5rem;
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+        }
+        .sidebar .list-group-item.active {
+            font-weight: 700;
+            background-color: rgb(89, 95, 99)!important
+        }
+        .arrow-down {
+            width: 0; 
+            height: 0; 
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid rgba(255, 255, 255, 0.4);
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .arrow-right {
+            width: 0; 
+            height: 0; 
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 5px solid rgba(255, 255, 255, 0.4);
+            display: inline-block;
+            margin-right: 6px;
+        }
     </style>
   </head>
   <body>
     <main class="container-fluid" id="my-app">
         <div class="row">
-            <div class="col-2 vh-100 text-white sticky-top" id="sticky-sidebar" style="background-color: rgb(55, 60, 63); padding-top: 12px;">
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link active" aria-current="page">
-                        Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                        Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                        Orders
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                        Products
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                        Customers
-                        </a>
-                    </li>
-                </ul>
-                <hr>
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                        <strong>mdo</strong>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
-                    </ul>
-                </div>
-                
+            <div class="col-2 vh-100 text-white sticky-top" id="sticky-sidebar" 
+                style="overflow: scroll; background-color: rgb(55, 60, 63); padding-top: 0px; padding-left: 0px; padding-right: 0px;">
+                <sidebar></sidebar>
             </div>
             <div class="col-10">
                 <div class="container-fluid" style="position: fixed; top: 0; padding-left: 0; margin-left: -12px;">
@@ -119,7 +126,8 @@
     <script type="text/javascript">
         var components = {
             "MarkdownView" : httpVueLoader('/markdown-view.vue'),
-            "Breadcrumbs" : httpVueLoader('/breadcrumbs.vue')
+            "Breadcrumbs" : httpVueLoader('/breadcrumbs.vue'),
+            "Sidebar" : httpVueLoader('/sidebar.vue')
         }
         const router = new VueRouter({
             mode: 'history',
