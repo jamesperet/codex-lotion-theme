@@ -37,6 +37,7 @@ module.exports = {
             for (let i = 0; i < list.length; i++) {
                 if(list[i] != ""){
                     link += "/" + list[i];
+                    if(link.split(".").length == 1) link += "/";
                     var crumb = {
                         title : list[i],
                         link : link

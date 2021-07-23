@@ -11,6 +11,7 @@ class LotionTheme {
 
     init()
     {
+      var _this = this;
       var files = [
         "node_modules/bootstrap/dist/css/bootstrap.min.css",
         "node_modules/bootstrap/dist/css/bootstrap.min.css.map",
@@ -18,13 +19,13 @@ class LotionTheme {
         "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map",
         "node_modules/vue/dist/vue.js",
         "node_modules/vue-router/dist/vue-router.min.js",
+        "views/vue/folder-view.vue",
         "views/vue/markdown-view.vue",
         "views/vue/breadcrumbs.vue",
-        "views/vue/sidebar.vue"
+        "views/vue/sidebar.vue",
+        "views/vue/sidebar-file.vue"
       ]
       for (let i = 0; i < files.length; i++) {
-        var _this = this;
-        
         this.server.express.get("/" + files[i].split("/").pop(), function (req, res) {
           var file = path.join(path.dirname(fs.realpathSync(__filename)), files[i]);
           res.sendFile(file, function(err){
@@ -38,6 +39,9 @@ class LotionTheme {
           });
         });
       }
+      this.server.express.get("/api/routes", function (req, res) {
+        res.json({ files: _this.server.file_structure});
+      });
     }
 
     run(){}

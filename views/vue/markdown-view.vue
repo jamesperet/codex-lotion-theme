@@ -11,9 +11,8 @@ module.exports = {
         }
     },
     created: function() {
-        console.log("Creating view");
+        console.log("Creating markdown view");
         bus.$on('updated-content', this.getContent);
-        bus.$on('updated-links', this.updateLinks);
         var vm = this;
         window.addEventListener("popstate", function(event) {
             vm.getContent();
@@ -21,12 +20,11 @@ module.exports = {
         this.getContent();
     },
     beforeDestroy: function() {
-        console.log("Destroying view");
-        bus.$off('updated-links', this.updateLinks);
+        console.log("Destroying markdown view");
         bus.$off('updated-content', this.getContent);
     },
     updated: function() {
-
+        this.getContent();
     },
     methods: {
         getContent: function () {
@@ -34,42 +32,17 @@ module.exports = {
             console.log("Loading " + link);
             axios.get(link).then(response => {
                 this.module_data = response.data.body;
-                bus.$emit('updated-links');
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
                 bus.$emit('updated-breadcrumbs');
+                bus.$emit('updated-sidebar');
+                bus.$emit('updated-links');
             });
-        },
-        updateLinks: function() {
-            var clickHandler = this.clickHandler;
-            setTimeout(function () {
-                var links = document.getElementsByTagName("a");
-                //console.log(links);
-                for (let i = 0; i < links.length; i++) {
-                    const element = links[i];
-                    element.removeEventListener("click", clickHandler);
-                    element.addEventListener("click", clickHandler);     
-                }
-            }, 500);
-        },
-        removeLinks: function(){
-            var links = document.getElementsByTagName("a");
-            for (let i = 0; i < links.length; i++) {
-                const element = links[i];
-                element.removeEventListener("click", this);
-            }
-        },
-        clickHandler: function(event){
-            console.log("link clicked: " + event.target.href);
-            this.removeLinks();
-            if(event.target.host == window.location.host){
-                event.preventDefault();
-                var route = event.target.href.replace(window.location.host, "").replace("http://", "").replace("https://", "");
-                var window_location = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "");
-                if(route != window_location){
-                    router.push({path: route});
-                    bus.$emit('updated-content');
-                }
-            }
-            //console.log(event);
         }
     }
 }
