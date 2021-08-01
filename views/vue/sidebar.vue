@@ -2,7 +2,7 @@
     <div class="sidebar">
         <div class="divider-text" style="margin-top: 12px;">FILES</div>
         <div class="list-group list-group-flush">
-            <sidebar-file v-for="file in current_directory" :key="file.key" v-bind:content="file"></sidebar-file>
+            <sidebar-file v-for="file in current_directory" :key="file.key" v-bind:content="file" v-bind:depth="0"></sidebar-file>
         </div>
         <hr>
         <div style="padding-left: 12px; padding-right: 12px padding-bottom: 12px; margin-bottom: 12px;">

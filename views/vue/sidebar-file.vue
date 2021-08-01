@@ -3,12 +3,15 @@
         <a :id="getId()"
             class="list-group-item list-group-item-action text-truncate" 
             :class="isCurrentLocation ? 'active' : ''" aria-current="true" style="cursor: pointer;">
-                <div v-if="content.opened" v-on:click="closeFolder()" class="arrow-down"></div>
-                <div v-if="!content.opened" v-on:click="openFolder()" class="arrow-right"></div>
+                <span v-bind:style="{ marginLeft: depth * 18 + 'px' }"></span>
+                <div v-if="content.opened && content.isFile" v-on:click="closeFolder()" class="arrow-down"></div>
+                <div v-if="!content.opened && content.isFile" v-on:click="openFolder()" class="arrow-right"></div>
+                <span v-if="!content.isFile" class="file-icon" style="margin-left: 16px"><i class="far fa-file"></i></span>
+                <span v-if="content.isFile" class="file-icon"><i class="far fa-folder"></i></span>
                 <span v-on:click="goToPath(content.path)">{{content.name}}</span>
         </a>
-        <div v-if="content.opened" style="padding-left: 10px">
-            <sidebar-file v-for="c in content.folder_contents" :key="c.key" v-bind:content="c"></sidebar-file>
+        <div v-if="content.opened">
+            <sidebar-file v-for="c in content.folder_contents" :key="c.key" v-bind:content="c" v-bind:depth="depth + 1"></sidebar-file>
         </div>
     </div>
 </template>
@@ -21,7 +24,7 @@ module.exports = {
             current_location : ''
         }
     },
-    props: ['content'],
+    props: ['content', 'depth'],
     created: function() {
         bus.$on('updated-sidebar', this.updateData);
         this.updateData();
