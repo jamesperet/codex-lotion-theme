@@ -19,6 +19,8 @@ class LotionTheme {
         "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map",
         "node_modules/vue/dist/vue.js",
         "node_modules/vue-router/dist/vue-router.min.js",
+        "views/files/http-vue-loader.js",
+        "views/files/axios.min.js",
         "views/vue/folder-view.vue",
         "views/vue/markdown-view.vue",
         "views/vue/breadcrumbs.vue",

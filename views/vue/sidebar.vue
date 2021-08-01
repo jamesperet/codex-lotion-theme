@@ -80,7 +80,7 @@ module.exports = {
             for (let i = 0; i < this.current_directory.length; i++) {
                 const file = this.current_directory[i];
                 if(link_parts[0].toLowerCase() == file.name.toLowerCase()) {
-                    console.log("Found " + link_parts[0] + " - " + file.name);
+                    //console.log("Found " + link_parts[0] + " - " + file.name);
                     file.opened = true;
                     this.current_directory[i].key = this.current_directory[i].name + "_opened";
                     if(file.folder_contents != undefined)  {
@@ -103,13 +103,22 @@ module.exports = {
                     this.current_directory[current_index].folder_contents = base_folder_contents;
                 }
             });
+            // Scroll sidebar to current link
+            var s = link.replace("http://", "").replace("https://", "").replace("#", "").replace("/","").replaceAll("/","-").replaceAll(".", "");
+            if(s.charAt(s.length - 1) == "-") s = s.slice(0, -1);
+            s = s.toLowerCase();
+            console.log(s);
+            const el = this.$el.querySelector("#" + s);
+            if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
             //console.log(this.current_directory);
             this.$forceUpdate();
         },
         getContent: function(content, name){
             var return_content;
             for (let i = 0; i < content.length; i++) {
-                console.log(content[i].name + " is " + (content[i].opened ? "open" : "closed"));
+                //console.log(content[i].name + " is " + (content[i].opened ? "open" : "closed"));
                 if(name.toLowerCase() == content[i].name.toLowerCase()) {
                     //console.log(content[i]);
                     content[i].opened = true;
