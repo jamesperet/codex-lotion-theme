@@ -3,11 +3,12 @@
         <a :id="getId()"
             class="list-group-item list-group-item-action text-truncate" 
             :class="isCurrentLocation ? 'active' : ''" aria-current="true" style="cursor: pointer;">
-                <span v-bind:style="{ marginLeft: depth * 18 + 'px' }"></span>
+                <span v-bind:style="{ marginLeft: depth * 14 + (!content.isFile ? 14 : 0) + 'px' }"></span>
                 <div v-if="content.opened && content.isFile" v-on:click="closeFolder()" class="arrow-down"></div>
                 <div v-if="!content.opened && content.isFile" v-on:click="openFolder()" class="arrow-right"></div>
-                <span v-if="!content.isFile" class="file-icon" style="margin-left: 16px"><i class="far fa-file"></i></span>
-                <span v-if="content.isFile" class="file-icon"><i class="far fa-folder"></i></span>
+                <span class="file-icon">
+                    <i :class="$store.getters.getIcon(content)"></i>
+                </span>
                 <span v-on:click="goToPath(content.path)">{{content.name}}</span>
         </a>
         <div v-if="content.opened">
@@ -63,7 +64,7 @@ module.exports = {
             this.$forceUpdate();
         },
         getId: function(){
-            var s = this.content.path.replace("http://", "").replace("https://", "").replace("#", "").replace("/","").replaceAll("/","-").replaceAll(".", "");
+            var s = this.content.path.replace("http://", "").replace("https://", "").replace("#", "").replace("/","").replaceAll("/","-").replaceAll(".", "").replaceAll("%20", "-");
             if(s.charAt(s.length - 1) == "-") s = s.slice(0, -1);
             s = s.toLowerCase();
             return s;

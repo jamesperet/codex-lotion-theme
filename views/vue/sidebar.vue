@@ -30,7 +30,8 @@ module.exports = {
     components: components,
     data: function () {
         return {
-            current_directory : []
+            current_directory : [],
+            current_path : undefined
         }
     },
     created: function() {
@@ -46,6 +47,8 @@ module.exports = {
         getCurrentDirectory: function() {
             //this.current_directory = [];
             var link = window.location.href.replace("#", "") + "?list=true";
+            if(this.current_path == link) return;
+            else this.current_path = link;
             axios.get("/api/routes").then(response => {
                 response.data.files.forEach(element => {
                     //console.log(element);
@@ -104,7 +107,7 @@ module.exports = {
                 }
             });
             // Scroll sidebar to current link
-            var s = link.replace("http://", "").replace("https://", "").replace("#", "").replace("/","").replaceAll("/","-").replaceAll(".", "");
+            var s = link.replace("http://", "").replace("https://", "").replace("#", "").replace("/","").replaceAll("/","-").replaceAll(".", "").replaceAll("%20", "-");
             if(s.charAt(s.length - 1) == "-") s = s.slice(0, -1);
             s = s.toLowerCase();
             console.log(s);

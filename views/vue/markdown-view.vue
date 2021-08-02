@@ -1,5 +1,9 @@
 <template>
-    <div v-html="module_data"></div>
+    <div class="row justify-content-center" style="padding-top: 50px;">
+        <div class="col-9">
+            <div v-html="module_data"></div>                    
+        </div>
+    </div>
 </template>
 
 <script>

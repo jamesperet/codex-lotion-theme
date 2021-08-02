@@ -14,7 +14,8 @@ module.exports = {
     name: "Breadcrumbs",
     data: function () {
         return {
-            breadcrumbs : []
+            breadcrumbs : [],
+            current_path : undefined
         }
     },
     created: function() {
@@ -29,8 +30,9 @@ module.exports = {
     },
     methods: {
         setBreadcrumb: function() {
-            this.breadcrumbs = [];
             var route = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "").replace("#", "");
+            if(this.current_path == route) return;
+            this.breadcrumbs = [];
             console.log("route: " + route);
             var list = route.split("/");
             var link = "";
@@ -45,6 +47,7 @@ module.exports = {
                     this.breadcrumbs.push(crumb);
                 }
             }
+            this.current_path = route;
         }
     }
 }

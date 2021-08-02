@@ -85,7 +85,7 @@
             display: inline-block;
             margin-left: -4px;
             padding-bottom: 2px;
-            margin-right: 6px;
+            margin-right: 4px;
         }
         .arrow-right {
             width: 0; 
@@ -94,7 +94,7 @@
             border-bottom: 5px solid transparent;
             border-left: 5px solid rgba(255, 255, 255, 0.4);
             display: inline-block;
-            margin-right: 6px;
+            margin-right: 4px;
         }
         .arrow-down:hover {
             border-top: 5px solid rgba(255, 255, 255, 0.8);
@@ -105,6 +105,26 @@
         .file-icon {
             display: inline-block;
             margin-right: 4px;
+        }
+        .file {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            padding-top:8px;
+            padding-bottom:16px;
+            height: 90px;
+            font-size: 0.8em;
+            width: 124px;
+            float: left;
+        }
+        .file-large-icon {
+            font-size: 3.8em;
+            text-align: center;
+        }
+        .file:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            cursor: pointer;
         }
     </style>
   </head>
@@ -123,11 +143,7 @@
                         </div>
                     </nav>
                 </div>
-                <div class="row justify-content-center" style="padding-top: 50px;">
-                    <div class="col-9">
-                        <router-view></router-view>
-                    </div>
-                </div>
+                <router-view></router-view>
             </div>
         </div>
     </main>
@@ -136,6 +152,7 @@
     <script src="/vue.js"  crossorigin="anonymous"></script>
     <script src="/vue-router.min.js"  crossorigin="anonymous"></script>
     <script src="/http-vue-loader.js"  crossorigin="anonymous"></script>
+    <script src="/vuex.js"  crossorigin="anonymous"></script>
     <script src="/axios.min.js"></script>
 
     <script type="text/javascript">
@@ -153,11 +170,60 @@
                 { path: '*', component: components.FolderView }
             ]
         })
+        const store = new Vuex.Store({
+            state: {
+                user: {
+                    username: 'matt',
+                    fullName: 'Matt Maribojoc'
+                }
+            },
+            getters: {
+                getIcon: (state, getters) => (file) =>{
+                    if(file.isFile == true) return "far fa-folder";
+                    switch(file.ext.toLowerCase()){
+                        case "":
+                            return "far fa-folder";
+                        case ".png":
+                            return "far fa-image";
+                        case ".jpg":
+                            return "far fa-image";
+                        case ".gif":
+                            return "far fa-image";
+                        case ".jpeg":
+                            return "far fa-image";
+                        case ".zip":
+                            return "far fa-file-archive";
+                        case ".tgz":
+                            return "far fa-file-archive";
+                        case ".7z":
+                            return "far fa-file-archive";
+                        case ".js":
+                            return "fab fa-js-square";
+                        case ".css":
+                            return "fab fa-css3";
+                        case ".md":
+                            return "fas fa-file-alt";
+                        case ".markdown":
+                            return "fas fa-file-alt";
+                        case ".pdf":
+                            return "fas fa-file-pdf";
+                        case ".html":
+                            return "fas fa-file-code";
+                        default:
+                            console.log(file.ext);
+                            return "fa-file";
+                    }
+                }
+            },
+            mutations: {},
+            actions: {}
+        });
         var bus = new Vue();
         Vue.use(VueRouter);
         new Vue({
             el: '#my-app',
             components: components,
+            store: store,
             mode: 'history',
             router,
             data: function () {
