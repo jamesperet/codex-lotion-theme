@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="/fontawesome.css" rel="stylesheet">
-    <title>Hello, world!</title>
+    <title>Codex</title>
     <style>
         body {
             background-color: #2f3437;
@@ -36,10 +36,18 @@
             text-decoration: none;
             border-radius: .25rem;
             margin-top: -4px;
+            cursor: pointer;
         }
         .badge-link:hover { 
             color: #fff;
             background-color: rgb(89, 95, 99)!important 
+        }
+        .badge-link.active {
+            color: rgba(255, 255, 255, 0.9);
+            background-color: rgb(89, 95, 99)!important 
+        }
+        .badge-link.disabled {
+            color: rgba(255, 255, 255, 0.4);
         }
         .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
             margin-top: 15px;
@@ -126,6 +134,11 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .toolbar {
+            width: fit-content;
+            margin-left: auto;
+            margin-right: 15.5%;
+        }
     </style>
   </head>
   <body>
@@ -137,10 +150,9 @@
             </div>
             <div class="col-10">
                 <div class="container-fluid" style="position: fixed; top: 0; padding-left: 0; margin-left: -12px;">
-                    <nav class="navbar navbar-expand-md navbar-dark bg-dark" >
-                        <div class="container-fluid" style="padding-left: 12px;">
-                            <breadcrumbs></breadcrumbs>
-                        </div>
+                    <nav class="navbar navbar-expand-md navbar-dark bg-dark" style="margin-left: 12px; margin-right: 12px;">
+                        <breadcrumbs></breadcrumbs>
+                        <toolbar></toolbar>
                     </nav>
                 </div>
                 <router-view></router-view>
@@ -161,12 +173,14 @@
             "MarkdownView" : httpVueLoader('/markdown-view.vue'),
             "Breadcrumbs" : httpVueLoader('/breadcrumbs.vue'),
             "Sidebar" : httpVueLoader('/sidebar.vue'),
-            "SidebarFile" : httpVueLoader('/sidebar-file.vue')
+            "SidebarFile" : httpVueLoader('/sidebar-file.vue'),
+            "Toolbar" : httpVueLoader('/toolbar.vue')
         }
         const router = new VueRouter({
             mode: 'history',
             routes: [
                 { path: '*.md', component: components.MarkdownView },
+                { path: '*.markdown', component: components.MarkdownView },
                 { path: '*', component: components.FolderView }
             ]
         })

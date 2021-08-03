@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-content-center" style="padding-top: 50px;">
-        <div class="col-11">
+        <div class="col-12">
             <div class="container">
                 <div class="row">
                     <div class=" file text-truncate" v-for="(file, index) in folder_content" :key="index">
@@ -53,6 +53,8 @@ module.exports = {
             .catch(function (error) {
                 // handle error
                 console.log(error);
+                bus.$emit('updated-breadcrumbs');
+                bus.$emit('updated-sidebar');
             })
             .then(function () {
                 
@@ -110,9 +112,31 @@ module.exports = {
                     return "fas fa-file-alt";
                 case ".pdf":
                     return "fas fa-file-pdf";
+                case ".sh":
+                    return "fas fa-file-code";
+                case ".csharp":
+                    return "fas fa-file-code";
+                case ".py":
+                    return "fas fa-file-code";
+                case ".mp3":
+                    return "fas fa-file-audio";
+                case ".mp4":
+                    return "fas fa-file-audio";
+                case ".wav":
+                    return "fas fa-file-audio";
+                case ".aiff":
+                    return "fas fa-file-audio";
+                case ".m4v":
+                    return "fas fa-file-video";
+                case ".mov":
+                    return "fas fa-file-video";
+                case ".avi":
+                    return "fas fa-file-video";
+                case ".mkv":
+                    return "fas fa-file-video";
                 default:
                     console.log(file.ext);
-                    return "fa-file";
+                    return "far fa-file";
             }
         }
     },
