@@ -20,6 +20,7 @@ var files = [
   { route: "/webfonts/fa-solid-900.ttf", path: "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf" },
   { route: "/http-vue-loader.js", path: "views/files/http-vue-loader.js" },
   { route: "/vuex.js", path: "views/files/vuex.js" },
+  { route: "/editor.js", path: "views/files/editor.js" },
   { route: "/axios.min.js", path: "views/files/axios.min.js" },
   { route: "/folder-view.vue", path: "views/vue/folder-view.vue" },
   { route: "/markdown-view.vue", path: "views/vue/markdown-view.vue" },

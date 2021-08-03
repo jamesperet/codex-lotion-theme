@@ -1,7 +1,8 @@
 <template>
     <div class="row justify-content-center" style="padding-top: 50px;">
         <div class="col-9">
-            <div v-html="module_data"></div>                    
+            <div v-html="module_data"></div> 
+            <!-- <div id="editor"></div>                    -->
         </div>
     </div>
 </template>
@@ -46,6 +47,8 @@ module.exports = {
                 bus.$emit('updated-breadcrumbs');
                 bus.$emit('updated-sidebar');
                 bus.$emit('updated-links');
+                // let place = document.querySelector("#editor");
+                // let view = new MarkdownEditor(place, this.module_data);
             });
         }
     }
