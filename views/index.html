@@ -142,156 +142,37 @@
     </style>
   </head>
   <body>
-    <main class="container-fluid" id="my-app">
-        <div class="row">
-            <div class="col-2 vh-100 text-white sticky-top" id="sticky-sidebar" 
-                style="overflow: scroll; background-color: rgb(55, 60, 63); padding-top: 0px; padding-left: 0px; padding-right: 0px;">
-                <sidebar></sidebar>
-            </div>
-            <div class="col-10">
-                <div class="container-fluid" style="position: fixed; top: 0; padding-left: 0; margin-left: -12px;">
-                    <nav class="navbar navbar-expand-md navbar-dark bg-dark" style="margin-left: 12px; margin-right: 12px;">
-                        <breadcrumbs></breadcrumbs>
-                        <toolbar></toolbar>
-                    </nav>
+    <div id="app">
+        <main class="container-fluid">
+            <div class="row">
+                <div class="col-2 vh-100 text-white sticky-top" id="sticky-sidebar" 
+                    style="overflow: scroll; background-color: rgb(55, 60, 63); padding-top: 0px; padding-left: 0px; padding-right: 0px;">
+                    <sidebar></sidebar>
                 </div>
-                <router-view></router-view>
+                <div class="col-10">
+                    <div class="container-fluid" style="position: fixed; top: 0; padding-left: 0; margin-left: -12px;">
+                        <nav class="navbar navbar-expand-md navbar-dark bg-dark" style="margin-left: 12px; margin-right: 12px;">
+                            <breadcrumbs></breadcrumbs>
+                            <toolbar></toolbar>
+                        </nav>
+                    </div>
+                    <router-view></router-view>
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
         
     <script src="/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>
-    <script src="/editor.js"></script>
+    <!-- <script src="/editor.js"></script>
     <script src="/vue.js"  crossorigin="anonymous"></script>
     <script src="/vue-router.min.js"  crossorigin="anonymous"></script>
     <script src="/http-vue-loader.js"  crossorigin="anonymous"></script>
-    <script src="/vuex.js"  crossorigin="anonymous"></script>
+    <script src="/vuex.js"  crossorigin="anonymous"></script> -->
     <script src="/axios.min.js"></script>
+    
+    <script src="/bundle.js"></script>
 
-    <script type="text/javascript">
-        var components = {
-            "FolderView" : httpVueLoader('/folder-view.vue'),
-            "MarkdownView" : httpVueLoader('/markdown-view.vue'),
-            "Breadcrumbs" : httpVueLoader('/breadcrumbs.vue'),
-            "Sidebar" : httpVueLoader('/sidebar.vue'),
-            "SidebarFile" : httpVueLoader('/sidebar-file.vue'),
-            "Toolbar" : httpVueLoader('/toolbar.vue')
-        }
-        const router = new VueRouter({
-            mode: 'history',
-            routes: [
-                { path: '*.md', component: components.MarkdownView },
-                { path: '*.markdown', component: components.MarkdownView },
-                { path: '*', component: components.FolderView }
-            ]
-        })
-        const store = new Vuex.Store({
-            state: {
-                user: {
-                    username: 'matt',
-                    fullName: 'Matt Maribojoc'
-                }
-            },
-            getters: {
-                getIcon: (state, getters) => (file) =>{
-                    if(file.isFile == true) return "far fa-folder";
-                    switch(file.ext.toLowerCase()){
-                        case "":
-                            return "far fa-folder";
-                        case ".png":
-                            return "far fa-image";
-                        case ".jpg":
-                            return "far fa-image";
-                        case ".gif":
-                            return "far fa-image";
-                        case ".jpeg":
-                            return "far fa-image";
-                        case ".zip":
-                            return "far fa-file-archive";
-                        case ".tgz":
-                            return "far fa-file-archive";
-                        case ".7z":
-                            return "far fa-file-archive";
-                        case ".js":
-                            return "fab fa-js-square";
-                        case ".css":
-                            return "fab fa-css3";
-                        case ".md":
-                            return "fas fa-file-alt";
-                        case ".markdown":
-                            return "fas fa-file-alt";
-                        case ".pdf":
-                            return "fas fa-file-pdf";
-                        case ".html":
-                            return "fas fa-file-code";
-                        default:
-                            console.log(file.ext);
-                            return "fa-file";
-                    }
-                }
-            },
-            mutations: {},
-            actions: {}
-        });
-        var bus = new Vue();
-        Vue.use(VueRouter);
-        new Vue({
-            el: '#my-app',
-            components: components,
-            store: store,
-            mode: 'history',
-            router,
-            data: function () {
-                    return {  
-                }
-            },
-            created: function() {
-                console.log("Creating folder view");
-                bus.$on('updated-links', this.updateLinks);
-            },
-            beforeDestroy: function() {
-                console.log("Destroying folder view");
-                bus.$off('updated-links', this.updateLinks);
-            },
-            updated: function() {
-                this.updateLinks();
-            },
-            methods: {
-                updateLinks: function() {
-                    var clickHandler = this.clickHandler;
-                    setTimeout(function () {
-                        var links = document.getElementsByTagName("a");
-                        //console.log(links);
-                        for (let i = 0; i < links.length; i++) {
-                            const element = links[i];
-                            element.removeEventListener("click", clickHandler);
-                            element.addEventListener("click", clickHandler);     
-                        }
-                    }, 500);
-                },
-                removeLinks: function(){
-                    var links = document.getElementsByTagName("a");
-                    for (let i = 0; i < links.length; i++) {
-                        const element = links[i];
-                        element.removeEventListener("click", this);
-                    }
-                },
-                clickHandler: function(event){
-                    console.log("link clicked: " + event.target.href);
-                    this.removeLinks();
-                    if(event.target.host == window.location.host){
-                        event.preventDefault();
-                        var route = event.target.href.replace(window.location.host, "").replace("http://", "").replace("https://", "");
-                        var window_location = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "");
-                        if(route != window_location){
-                            router.push({path: route});
-                            bus.$emit('updated-content');
-                        }
-                    }
-                }
-            }
-        });
-      </script> 
+    <script type="text/javascript"></script> 
 
   </body>
 </html>

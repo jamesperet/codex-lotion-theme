@@ -2,13 +2,14 @@
     <div class="row justify-content-center" style="padding-top: 50px;">
         <div class="col-9">
             <div v-html="module_data"></div> 
-            <!-- <div id="editor"></div>                    -->
+            <!-- <div id="editor"></div> -->
         </div>
     </div>
 </template>
 
 <script>
-module.exports = {
+import {MarkdownEditor} from "./../editor/editor.js"
+export default {
     name: "MarkdownView",
     data: function () {
         return {
@@ -17,7 +18,7 @@ module.exports = {
     },
     created: function() {
         console.log("Creating markdown view");
-        bus.$on('updated-content', this.getContent);
+        this.$root.$on('updated-content', this.getContent);
         var vm = this;
         window.addEventListener("popstate", function(event) {
             vm.getContent();
@@ -26,7 +27,7 @@ module.exports = {
     },
     beforeDestroy: function() {
         console.log("Destroying markdown view");
-        bus.$off('updated-content', this.getContent);
+        this.$root.$off('updated-content', this.getContent);
     },
     updated: function() {
         this.getContent();
@@ -34,9 +35,9 @@ module.exports = {
     methods: {
         getContent: function () {
             var link = window.location.href.replace("#", "") + "?view=content";
-            console.log("Loading " + link);
+            var vm = this;
             axios.get(link).then(response => {
-                this.module_data = response.data.body;
+                vm.module_data = response.data.body;
             })
             .catch(function (error) {
                 // handle error
@@ -44,11 +45,11 @@ module.exports = {
             })
             .then(function () {
                 // always executed
-                bus.$emit('updated-breadcrumbs');
-                bus.$emit('updated-sidebar');
-                bus.$emit('updated-links');
+                vm.$root.$emit('updated-breadcrumbs');
+                vm.$root.$emit('updated-sidebar');
+                vm.$root.$emit('updated-links');
                 // let place = document.querySelector("#editor");
-                // let view = new MarkdownEditor(place, this.module_data);
+                // let view = new MarkdownEditor(place, vm.module_data);
             });
         }
     }

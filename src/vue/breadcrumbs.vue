@@ -10,7 +10,7 @@
 </template>
 
 <script>
-module.exports = {
+export default {
     name: "Breadcrumbs",
     data: function () {
         return {
@@ -20,10 +20,10 @@ module.exports = {
     },
     created: function() {
         this.setBreadcrumb();
-        bus.$on('updated-breadcrumbs', this.setBreadcrumb);
+        this.$root.$on('updated-breadcrumbs', this.setBreadcrumb);
     },
     beforeDestroy: function() {
-        bus.$off('updated-breadcrumbs', this.setBreadcrumb);
+        this.$root.$off('updated-breadcrumbs', this.setBreadcrumb);
     },
     updated: function() {
         

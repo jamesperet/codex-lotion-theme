@@ -18,7 +18,8 @@
 </template>
 
 <script>
-module.exports = {
+import router from "./../router.js";
+export default {
     name: "SidebarFile",
     data: function () {
         return {
@@ -27,11 +28,11 @@ module.exports = {
     },
     props: ['content', 'depth'],
     created: function() {
-        bus.$on('updated-sidebar', this.updateData);
+        this.$root.$on('updated-sidebar', this.updateData);
         this.updateData();
     },
     beforeDestroy: function() {
-        bus.$off('updated-sidebar', this.updateData);
+        this.$root.$off('updated-sidebar', this.updateData);
     },
     updated: function() {
         //console.log(content.key);
@@ -46,8 +47,8 @@ module.exports = {
         goToPath: function(path){
             
             console.log("sidebar button clicked");
-            router.push({path: "/" + path});
-            bus.$emit('updated-content');
+            router.push({path: "/" + path}).catch(err => { console.log(err)});
+            this.$root.$emit('updated-content');
         },
         updateData: function(){
             this.current_location = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "").replace("#", "");

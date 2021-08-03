@@ -25,9 +25,12 @@
 </template>
 
 <script>
-module.exports = {
+import sidebarFile from './sidebar-file.vue';
+export default {
     name: "Sidebar",
-    components: components,
+    components: {
+        "SidebarFile": sidebarFile
+    },
     data: function () {
         return {
             current_directory : [],
@@ -35,10 +38,10 @@ module.exports = {
         }
     },
     created: function() {
-        bus.$on('updated-sidebar', this.getCurrentDirectory);
+        this.$root.$on('updated-sidebar', this.getCurrentDirectory);
     },
     beforeDestroy: function() {
-        bus.$off('updated-sidebar', this.getCurrentDirectory);
+        this.$root.$off('updated-sidebar', this.getCurrentDirectory);
     },
     updated: function() {
         
