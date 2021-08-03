@@ -50,7 +50,7 @@ const store = new Vuex.Store({
                 case ".mp3":
                     return "fas fa-file-audio";
                 case ".mp4":
-                    return "fas fa-file-audio";
+                    return "fas fa-file-video";
                 case ".wav":
                     return "fas fa-file-audio";
                 case ".aiff":
@@ -69,7 +69,7 @@ const store = new Vuex.Store({
                     return "fas fa-file-code";
                 default:
                     console.log(file.ext);
-                    return "fa-file";
+                    return "fas fa-file";
             }
         }
     },

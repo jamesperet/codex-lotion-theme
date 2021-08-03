@@ -20,7 +20,7 @@ export class ProseMirrorView {
     this.view = new EditorView(target, {
       state: EditorState.create({
         doc: defaultMarkdownParser.parse(content),
-        plugins: exampleSetup({schema})
+        plugins: exampleSetup({schema: schema, menuBar: false})
       })
     })
   }
