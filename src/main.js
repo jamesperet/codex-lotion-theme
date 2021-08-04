@@ -57,7 +57,7 @@ new Vue({
             }
         },
         clickHandler: function(event){
-            console.log("link clicked: " + event.target.href);
+            if(event.target.href != undefined) console.log("link clicked: " + event.target.href);
             this.removeLinks();
             if(event.target.host == window.location.host){
                 event.preventDefault();

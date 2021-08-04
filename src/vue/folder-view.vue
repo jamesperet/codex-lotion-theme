@@ -49,6 +49,7 @@ export default {
             console.log(link);
             if(link == this.current_path) return;
             else this.current_path = link;
+            this.$root.$emit('hide-save');
             axios.get(link).then(response => {
                 vm.folder_content = response.data.files;
                 vm.checkForIndex();

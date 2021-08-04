@@ -21,6 +21,7 @@ export default {
     created: function() {
         console.log("Creating markdown view");
         this.$root.$on('updated-content', this.getContent);
+        this.$root.$on('save-document', this.saveDocument);
         var vm = this;
         window.addEventListener("popstate", function(event) {
             vm.getContent();
@@ -30,6 +31,7 @@ export default {
     beforeDestroy: function() {
         console.log("Destroying markdown view");
         this.$root.$off('updated-content', this.getContent);
+        this.$root.$off('save-document', this.saveDocument);
     },
     updated: function() {
         this.getContent();
@@ -50,14 +52,19 @@ export default {
                 vm.$root.$emit('updated-breadcrumbs');
                 vm.$root.$emit('updated-sidebar');
                 vm.$root.$emit('updated-links');
+                vm.$root.$emit('hide-save');
                 vm.clearEditor();
                 vm.editor_container = document.querySelector("#editor");
                 //vm.editor_view = new MarkdownEditor(place, vm.module_data);
-                vm.editor_view = new ProseMirrorView(vm.editor_container, vm.module_data);
+                vm.editor_view = new ProseMirrorView(vm.editor_container, vm.module_data, vm);
             });
         },
         clearEditor: function(){
             if(this.editor_container != undefined) this.editor_container.innerHTML = "";
+        },
+        saveDocument: function(){
+            //console.log("saving document...");
+            if(this.editor_view != undefined) this.editor_view.saveDocument();
         }
     }
 }

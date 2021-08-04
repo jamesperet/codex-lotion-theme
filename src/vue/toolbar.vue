@@ -6,8 +6,14 @@
         <span style="margin-left: 15px;"></span>
         <a class="badge-link"><i class="fas fa-plus"></i></a>
         <a class="badge-link"><i class="fas fa-edit"></i></a> -->
+        <a class="badge-link" v-show="show_save" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" 
+            title="save" v-on:click="saveDocument()">
+            <i class="fas fa-save"></i>
+        </a>
         <a class="badge-link" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-html="true" 
-            title="Pin this page <br>in your sidebar"><i class="far fa-star"></i></a>
+            title="Pin this page <br>in your sidebar">
+            <i class="far fa-star"></i>
+        </a>
         
         <div class="dropdown" style="display: inline;">
 
@@ -33,11 +39,15 @@ export default {
     name: "Toolbar",
     data: function () {
         return {
-            current_location : ''
+            current_location : '',
+            show_save : false
         }
     },
     props: [],
     created: function() {
+        this.$root.$on('show-save', this.showSave);
+        this.$root.$on('hide-save', this.hideSave);
+        // Enable Bootstrap tooltips
         this.$nextTick(function () {
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -46,7 +56,8 @@ export default {
         });
     },
     beforeDestroy: function() {
-        
+        this.$root.$off('show-save', this.showSave);
+        this.$root.$off('hide-save', this.hideSave);
     },
     updated: function() {
         
@@ -55,7 +66,16 @@ export default {
         
     },
     methods: {
-        
+        showSave: function(){
+            this.show_save = true;
+        },
+        hideSave: function(){
+            this.show_save = false;
+        },
+        saveDocument: function(){
+            //console.log("Pressed save button");
+            this.$root.$emit('save-document');
+        }
     },
     computed: {
         
