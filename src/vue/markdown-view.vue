@@ -53,8 +53,12 @@ export default {
                 vm.$root.$emit('updated-sidebar');
                 vm.$root.$emit('updated-links');
                 vm.$root.$emit('hide-save');
-                vm.clearEditor();
+                if(window.location.href.split('.').pop() == "md"){
+                    vm.$store.getters.setLocation(window.location.href);
+                    console.log("markdown view location: " +  vm.$store.getters.getLocation());
+                }
                 vm.editor_container = document.querySelector("#editor");
+                vm.clearEditor();
                 //vm.editor_view = new MarkdownEditor(place, vm.module_data);
                 vm.editor_view = new ProseMirrorView(vm.editor_container, vm.module_data, vm);
             });

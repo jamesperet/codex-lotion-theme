@@ -69,7 +69,7 @@ export default {
         openSidebarToPath: function() {
             var link = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "").replace("#", "");
             var link_parts = link.split("/");
-            console.log(link_parts);
+            //console.log(link_parts);
             for (let a = 0; a < link_parts.length; a++) {
                 if(link_parts[a] == "") {
                     link_parts.splice(a, 1);
@@ -113,7 +113,7 @@ export default {
             var s = link.replace("http://", "").replace("https://", "").replace("#", "").replace("/","").replaceAll("/","-").replaceAll(".", "").replaceAll("%20", "-");
             if(s.charAt(s.length - 1) == "-") s = s.slice(0, -1);
             s = s.toLowerCase();
-            console.log(s);
+            //console.log(s);
             const el = this.$el.querySelector("#" + s);
             if (el) {
                 el.scrollIntoView({ behavior: "smooth", block: "center" });

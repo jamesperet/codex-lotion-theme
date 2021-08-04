@@ -35,14 +35,17 @@ export class ProseMirrorView {
   }
 
   get content() {
-    return defaultMarkdownSerializer.serialize(this.view.state.doc)
+    return defaultMarkdownSerializer.serialize(this.view.state.doc,)
   }
 
   saveDocument() {
     var link = window.location.href.replace("#", "");
     console.log("Saving document (" + link + ")");
+    var data = this.content;
+    data = data.replaceAll("\\", "");
+    console.log(data);
     var vm = this.vm;
-    axios.post(link, { file: this.content }).then(response => {
+    axios.post(link, { file: data }).then(response => {
         console.log(response);
     })
     .catch(function (error) {
@@ -50,6 +53,7 @@ export class ProseMirrorView {
     })
     .then(function () {
       vm.$root.$emit('hide-save');
+      vm.$root.$emit('updated-content');
     });
   }
 

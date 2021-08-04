@@ -23,7 +23,7 @@ export default {
     data: function () {
         return {
             folder_content: "",
-            current_path : undefined
+            current_path : undefined,
         }
     },
     created: function() {
@@ -46,7 +46,6 @@ export default {
         getFolderContents : function(){
             var link = window.location.href.replace("#", "") + "?list=true";
             var vm = this;
-            console.log(link);
             if(link == this.current_path) return;
             else this.current_path = link;
             this.$root.$emit('hide-save');
@@ -69,17 +68,22 @@ export default {
             for (let index = 0; index < this.folder_content.length; index++) {
                 const element = this.folder_content[index];
                 if(element.name == "index.md") {
-                    var route = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "").replace("index.md", "");
+                    var route = this.getBaseRoute();
                     route += "index.md";
-                    console.log("Found index file: " + route);
-                    router.push({path: route}).catch(err => { console.log(err)});;
-                    foundIndex = true;
-                    return;
+                    if(this.$store.getters.getLocation() != route){
+                        this.previous_path = route;
+                        console.log("Found index file: " + route);
+                        router.push({path: route}).catch(err => { console.log(err)});;
+                        foundIndex = true;
+                        return;
+                    }
+                    
                 }
             }
             if(foundIndex == false){
                 this.$root.$emit('updated-breadcrumbs');
                 this.$root.$emit('updated-sidebar');
+                this.$store.getters.setLocation(window.location.href);
             }
         },
         goToPath: function(path){
@@ -87,6 +91,10 @@ export default {
             router.push({path: "/" + path}).catch(err => { console.log(err)});;
             this.$root.$emit('updated-content');
         },
+        getBaseRoute: function(){
+            return window.location.href.replace(window.location.host, "").replace("http://", "")
+                .replace("https://", "").replace("index.md", "");
+        }
     },
     computed: {
         

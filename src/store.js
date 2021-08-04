@@ -5,9 +5,19 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        
+        current_location : undefined
     },
     getters: {
+        getLocation: (state, getters) => () =>{
+            return state.current_location;
+        },
+        setLocation: (state, getters) => (location) =>{
+            state.current_location = location
+                .replace("#", "")
+                .replace(window.location.host, "")
+                .replace("http://", "")
+                .replace("https://", "");
+        },
         getIcon: (state, getters) => (file) =>{
             if(file.isFile == true) return "far fa-folder";
             switch(file.ext.toLowerCase()){
