@@ -120,6 +120,21 @@ const store = new Vuex.Store({
                     reject(error);
                 })
             })
+        },
+        delete ({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                var link = "http://" + window.location.host + "/api/delete";
+                var path = data.path;
+                console.log("Deleting " + link);
+                axios.post(link, {path : path}).then(response => {
+                    resolve(response);
+                })
+                .catch(function (error) {
+                    console.log("Error deleting " + path);
+                    console.log(error);
+                    reject(error);
+                })
+            })
         }
     }
 });

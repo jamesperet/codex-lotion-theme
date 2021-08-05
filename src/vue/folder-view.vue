@@ -48,8 +48,6 @@ export default {
             var vm = this;
             var loc = this.$store.getters.getLocationCurrent();
             var base_loc = this.$store.getters.getLocationPath();
-            console.log(loc);
-            console.log(base_loc);
             if(loc != base_loc && loc != base_loc + "index.md") return;
             if(link == this.current_path) return;
             else this.current_path = link;

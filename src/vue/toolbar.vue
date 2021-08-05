@@ -56,7 +56,11 @@
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="#"><i class="fas fa-tag"></i>Rename</a></li>
                 <li><a class="dropdown-item" href="#"><i class="fas fa-level-down-alt"></i>Move to</a></li>
-                <li><a class="dropdown-item" href="#"><i class="fas fa-trash-alt"></i>Delete</a></li>
+                <li>
+                    <a class="dropdown-item" href="#" v-on:click="deleteCurrentPath()">
+                        <i class="fas fa-trash-alt"></i>Delete
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -64,6 +68,7 @@
 </template>
 
 <script>
+import router from "./../router.js";
 export default {
     name: "Toolbar",
     data: function () {
@@ -109,6 +114,21 @@ export default {
             this.$store.dispatch('testAction').then((data) => {
                 console.log(data);
             })
+        },
+        deleteCurrentPath: function(){
+            var path = this.$store.getters.getLocationCurrent();
+            var payload = { path: path };
+            this.$store.dispatch('delete', payload).then((response) => {
+                console.log(response);
+                var current = path.split("/").pop();
+                var newPath = path.replace(current, "");
+                if(path == newPath) newPath = "/";
+                console.log("Deleted: " + path);
+                console.log("Loading " + newPath)
+                router.push({path: newPath}).catch(err => { console.log(err)});
+                this.$root.$emit('refresh-sidebar');
+                this.$root.$emit('updated-content');
+            }).catch(err => { console.log(err)});
         }
     },
     computed: {

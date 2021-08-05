@@ -83,12 +83,12 @@ export default {
             this.$store.dispatch('createFile', payload).then((response) => {
                 console.log(response);
                 var newPath = path + this.fileName + ext;
+                this.fileName = "";
                 console.log("new file created in " + newPath);
                 router.push({path: newPath}).catch(err => { console.log(err)});
                 this.$root.$emit('refresh-sidebar');
                 this.$root.$emit('updated-content');
-                this.fileName = "";
-            })
+            }).catch(err => { console.log(err)});
         }
     },
     computed: {
