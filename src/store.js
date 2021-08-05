@@ -121,6 +121,21 @@ const store = new Vuex.Store({
                 })
             })
         },
+        createFolder ({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                var link = "http://" + window.location.host + "/api/create_folder";
+                var path = data.path;
+                console.log("Creating folder " + link);
+                axios.post(link, {path : path}).then(response => {
+                    resolve(response);
+                })
+                .catch(function (error) {
+                    console.log("Error creating folder " + path);
+                    console.log(error);
+                    reject(error);
+                })
+            })
+        },
         delete ({ commit }, data) {
             return new Promise((resolve, reject) => {
                 var link = "http://" + window.location.host + "/api/delete";
@@ -135,7 +150,7 @@ const store = new Vuex.Store({
                     reject(error);
                 })
             })
-        }
+        },
     }
 });
 

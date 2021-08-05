@@ -15,7 +15,7 @@
                 </div>
                 <div class="modal-footer">
                     <a  class="badge-link" data-bs-dismiss="modal">Cancel</a>
-                    <a class="badge-link">Create</a>
+                    <a class="badge-link" data-bs-dismiss="modal" v-on:click="createFolder()">Create</a>
                 </div>
                 </div>
             </div>
@@ -86,6 +86,19 @@ export default {
                 this.fileName = "";
                 console.log("new file created in " + newPath);
                 router.push({path: newPath}).catch(err => { console.log(err)});
+                this.$root.$emit('refresh-sidebar');
+                this.$root.$emit('updated-content');
+            }).catch(err => { console.log(err)});
+        },
+        createFolder: function(){
+            var path = this.$store.getters.getLocationPath();
+            path = path + this.folderName;
+            var payload = { path: path };
+            console.log(payload);
+            this.$store.dispatch('createFolder', payload).then((response) => {
+                console.log(response);
+                console.log("new file created in " + path);
+                router.push({path: path}).catch(err => { console.log(err)});
                 this.$root.$emit('refresh-sidebar');
                 this.$root.$emit('updated-content');
             }).catch(err => { console.log(err)});
