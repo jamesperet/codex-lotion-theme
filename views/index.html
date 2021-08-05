@@ -148,6 +148,47 @@
         #editor .ProseMirror-focused {
             outline: none;
         }
+        .modal-content {
+            background-color: rgb(55, 60, 63);
+            box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.2) 0px 5px 10px, rgba(15, 15, 15, 0.4) 0px 15px 40px;
+            border-radius: 4px;
+        }
+        .modal-header {
+            border-bottom: 1px solid rgb(99, 99, 99);
+            padding-top: 10px;
+            padding-bottom: 6px;
+        }
+        .modal-header h5 { margin-top: 0px; }
+        .modal-body { 
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+        }
+        .modal-footer {
+            border-top: 1px solid rgb(99, 99, 99);
+            border-bottom: none;
+            padding-bottom: 4px;
+        }
+        .form-control {
+            background-color: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1em;
+            outline: none;
+            border: none;
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+        .form-control:focus {
+            background-color: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1em;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            border-color: inherit;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+        input:focus { outline: none; border: none; }
+        .dropdown-item i { padding-right: 16px;}
     </style>
   </head>
   <body>
@@ -166,6 +207,7 @@
                         </nav>
                     </div>
                     <router-view></router-view>
+                    <modals></modals>
                 </div>
             </div>
         </main>

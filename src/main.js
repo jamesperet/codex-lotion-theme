@@ -8,16 +8,18 @@ import breadcrumbs from './vue/breadcrumbs.vue';
 import sidebar from './vue/sidebar.vue';
 import sidebarFile from './vue/sidebar-file.vue';
 import toolbar from './vue/toolbar.vue';
+import modals from './vue/modals.vue';
 
 new Vue({
     el: '#app',
     components: {
-        "FolderView" : folderView,
+        "FolderView"   : folderView,
         "MarkdownView" : markdownView,
-        "Breadcrumbs" : breadcrumbs,
-        "Sidebar" : sidebar,
-        "SidebarFile" : sidebarFile,
-        "Toolbar" : toolbar
+        "Breadcrumbs"  : breadcrumbs,
+        "Sidebar"      : sidebar,
+        "SidebarFile"  : sidebarFile,
+        "Toolbar"      : toolbar,
+        "Modals"       : modals
     },
     store: store,
     router: router,
