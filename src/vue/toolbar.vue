@@ -23,7 +23,11 @@
                         <i class="fas fa-folder"></i>New folder
                     </a>
                 </li>
-                <li><a class="dropdown-item" href="#"><i class="fas fa-file-alt"></i>New Markdown file</a></li>
+                <li>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#CreateFileModal">
+                        <i class="fas fa-file-alt"></i>New Markdown file
+                    </a>
+                </li>
                 <li><a class="dropdown-item" href="#"><i class="fas fa-upload"></i>File Upload</a></li>
             </ul>
         </div>
@@ -40,7 +44,10 @@
                     title="File and <br>folder actions"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <li><a class="dropdown-item" href="#"><i class="far fa-star"></i>Add to favorites</a></li>
+                <li><a class="dropdown-item" href="#" v-on:click="testStoreAction()">
+                        <i class="far fa-star"></i>Add to favorites
+                    </a>
+                </li>
                 <li><a class="dropdown-item" href="#"><i class="fas fa-link"></i>Copy link</a></li>
                 <li><a class="dropdown-item" href="#"><i class="fas fa-file-export"></i>Export</a></li>
                 <li><hr class="dropdown-divider"></li>
@@ -97,6 +104,11 @@ export default {
         saveDocument: function(){
             //console.log("Pressed save button");
             this.$root.$emit('save-document');
+        },
+        testStoreAction: function(){
+            this.$store.dispatch('testAction').then((data) => {
+                console.log(data);
+            })
         }
     },
     computed: {

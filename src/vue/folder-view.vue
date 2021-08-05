@@ -40,12 +40,17 @@ export default {
         this.$root.$off('updated-content', this.getFolderContents);
     },
     updated: function() {
-        this.getFolderContents();
+        //this.getFolderContents();
     },
     methods: {
         getFolderContents : function(){
             var link = window.location.href.replace("#", "") + "?list=true";
             var vm = this;
+            var loc = this.$store.getters.getLocationCurrent();
+            var base_loc = this.$store.getters.getLocationPath();
+            console.log(loc);
+            console.log(base_loc);
+            if(loc != base_loc && loc != base_loc + "index.md") return;
             if(link == this.current_path) return;
             else this.current_path = link;
             this.$root.$emit('hide-save');

@@ -34,25 +34,32 @@ export default {
     data: function () {
         return {
             current_directory : [],
-            current_path : undefined
+            current_path : undefined,
+            refresh_view : false
         }
     },
     created: function() {
         this.$root.$on('updated-sidebar', this.getCurrentDirectory);
+        this.$root.$on('refresh-sidebar', this.refreshView);
     },
     beforeDestroy: function() {
         this.$root.$off('updated-sidebar', this.getCurrentDirectory);
+        this.$root.$on('refresh-sidebar', this.refreshView);
     },
     updated: function() {
         
     },
     methods: {
         getCurrentDirectory: function() {
-            //this.current_directory = [];
             var link = window.location.href.replace("#", "") + "?list=true";
-            if(this.current_path == link) return;
-            else this.current_path = link;
+            if(!this.refresh_view){
+                if(this.current_path == link) return;
+            }
+            this.current_path = link;
             axios.get("/api/routes").then(response => {
+                if(this.refresh_view){
+                    this.current_directory = [];
+                }
                 response.data.files.forEach(element => {
                     //console.log(element);
                     element.opened = false;
@@ -63,6 +70,7 @@ export default {
                     }
                     if(!duplicate) this.current_directory.push(element);
                 });
+                this.refresh_view = false;
                 this.openSidebarToPath();
             });
         },
@@ -149,6 +157,9 @@ export default {
                 content[i].key = content[i].name + "_closed";
                 if(content[i].folder_contents != undefined) this.closeContent(content[i].folder_contents);
             }
+        },
+        refreshView: function(){
+            this.refresh_view = true;
         }
     }
 }

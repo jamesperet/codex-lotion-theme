@@ -11,6 +11,18 @@ const store = new Vuex.Store({
         getLocation: (state, getters) => () =>{
             return state.current_location;
         },
+        getLocationCurrent: (state, getters) => () =>{
+            var path = window.location.href.replace(window.location.host, "").replace("http://", "")
+                .replace("https://", "").replace("#", "");
+            return path;
+        },
+        getLocationPath: (state, getters) => () =>{
+            var path = window.location.href.replace(window.location.host, "").replace("http://", "")
+                .replace("https://", "").replace("#", "");
+            var f = path.split("/").pop();
+            if(f.includes(".")) path = path.replace(f, "");
+            return path;
+        },
         setLocation: (state, getters) => (location) =>{
             state.current_location = location
                 .replace("#", "")
@@ -84,7 +96,32 @@ const store = new Vuex.Store({
         }
     },
     mutations: {},
-    actions: {}
+    actions: {
+        testAction ({ commit }) {
+            return new Promise((resolve, reject) => {
+                var data = "";
+                setTimeout(() => {
+                    //commit('someMutation')
+                    data = "done!";
+                    resolve(data);
+                }, 1000)
+            })
+        },
+        createFile ({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                var link = "http://" + window.location.host + data.path + data.filename;
+                console.log("Creating file " + link);
+                axios.post(link, {file : data.content}).then(response => {
+                    resolve(response);
+                })
+                .catch(function (error) {
+                    console.log("Error creating new file (" + link + ")");
+                    console.log(error);
+                    reject(error);
+                })
+            })
+        }
+    }
 });
 
 export default store;

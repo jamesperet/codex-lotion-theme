@@ -1,17 +1,17 @@
 <template>
     <div>
-        <!-- Modal -->
-        <div class="modal fade" id="CreateFolderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- CreateFolderModal -->
+        <div class="modal fade" id="CreateFolderModal" tabindex="-1" aria-labelledby="CreateFolderModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create new folder</h5>
+                    <h5 class="modal-title" id="CreateFolderModalLabel">Create new folder</h5>
                     <a class="badge-link" data-bs-dismiss="modal" aria-label="Close" style="margin-top: 2px;">
                         <i class="fas fa-times"></i>
                     </a>
                 </div>
                 <div class="modal-body">
-                    <input type="name" class="form-control" id="folderName" placeholder="example-folder-name">
+                    <input type="name" v-model="folderName" class="form-control" id="folderName" placeholder="example-folder-name">
                 </div>
                 <div class="modal-footer">
                     <a  class="badge-link" data-bs-dismiss="modal">Cancel</a>
@@ -20,15 +20,39 @@
                 </div>
             </div>
         </div>
+
+        <!-- CreateFileModal -->
+        <div class="modal fade" id="CreateFileModal" tabindex="-1" aria-labelledby="CreateFileModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="CreateFileModalLabel">Create new markdown file</h5>
+                    <a class="badge-link" data-bs-dismiss="modal" aria-label="Close" style="margin-top: 2px;">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <input type="name" v-model="fileName" class="form-control" id="fileName" placeholder="example-file-name">
+                </div>
+                <div class="modal-footer">
+                    <a  class="badge-link" data-bs-dismiss="modal">Cancel</a>
+                    <a class="badge-link" data-bs-dismiss="modal" v-on:click="createFile('.md')">Create</a>
+                </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
 <script>
+import router from "./../router.js";
 export default {
     name: "Modals",
     data: function () {
         return {
-            
+            folderName: "",
+            fileName: ""
         }
     },
     props: [],
@@ -53,7 +77,19 @@ export default {
         
     },
     methods: {
-        
+        createFile: function(ext){
+            var path = this.$store.getters.getLocationPath();
+            var payload = { path: path, filename: this.fileName + ext, content: "" };
+            this.$store.dispatch('createFile', payload).then((response) => {
+                console.log(response);
+                var newPath = path + this.fileName + ext;
+                console.log("new file created in " + newPath);
+                router.push({path: newPath}).catch(err => { console.log(err)});
+                this.$root.$emit('refresh-sidebar');
+                this.$root.$emit('updated-content');
+                this.fileName = "";
+            })
+        }
     },
     computed: {
         

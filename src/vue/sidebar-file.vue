@@ -45,7 +45,6 @@ export default {
     },
     methods: {
         goToPath: function(path){
-            
             console.log("sidebar button clicked");
             router.push({path: "/" + path}).catch(err => { console.log(err)});
             this.$root.$emit('updated-content');
