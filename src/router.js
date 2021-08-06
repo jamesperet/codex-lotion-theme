@@ -3,12 +3,14 @@ import VueRouter from "vue-router";
 
 import folderView from './vue/folder-view.vue';
 import markdownView from './vue/markdown-view.vue';
+import fileView from './vue/file-view.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   { path: '*.md', component: markdownView },
   { path: '*.markdown', component: markdownView },
+  { path: '*.*', component: fileView },
   { path: '*', component: folderView }
 ];
 

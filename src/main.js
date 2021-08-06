@@ -4,6 +4,7 @@ import store from "./store.js";
 
 import folderView from './vue/folder-view.vue';
 import markdownView from './vue/markdown-view.vue';
+import fileView from './vue/file-view.vue';
 import errorView from './vue/error-view.vue';
 import breadcrumbs from './vue/breadcrumbs.vue';
 import sidebar from './vue/sidebar.vue';
@@ -16,6 +17,7 @@ new Vue({
     components: {
         "FolderView"   : folderView,
         "MarkdownView" : markdownView,
+        "FileView"     : fileView,
         "ErrorView"    : errorView,
         "Breadcrumbs"  : breadcrumbs,
         "Sidebar"      : sidebar,
@@ -48,8 +50,10 @@ new Vue({
                 //console.log(links);
                 for (let i = 0; i < links.length; i++) {
                     const element = links[i];
-                    element.removeEventListener("click", clickHandler);
-                    element.addEventListener("click", clickHandler);     
+                    if(!element.classList.contains(".execute-default")){
+                        element.removeEventListener("click", clickHandler);
+                        element.addEventListener("click", clickHandler);     
+                    }
                 }
             }, 500);
         },
@@ -57,7 +61,9 @@ new Vue({
             var links = document.getElementsByTagName("a");
             for (let i = 0; i < links.length; i++) {
                 const element = links[i];
-                element.removeEventListener("click", this);
+                if(!element.classList.contains(".execute-default")){
+                    element.removeEventListener("click", this);
+                }
             }
         },
         clickHandler: function(event){

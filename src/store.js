@@ -30,7 +30,7 @@ const store = new Vuex.Store({
         },
         getLocationData: (state, getters) => (path) =>{
             var locations = [];
-            var parts = path.split("/");
+            var parts = path.split('?')[0].split("/");
             for (let p = 0; p < parts.length; p++) {
                 if(parts[p] != "") locations.push(parts[p]);
             }
@@ -40,6 +40,7 @@ const store = new Vuex.Store({
                 }
                 return undefined;
             }
+            if(state.root.length == 0) return false;
             var list = state.root;
             var data = {}
             for (let l = 0; l < locations.length; l++) {
@@ -54,6 +55,39 @@ const store = new Vuex.Store({
                 }
             }
             return data;
+        },
+        formatDate: (state, getters) => (date) => {
+            var d = new Date(date);
+            var year = d.getFullYear();
+            var month = d.getMonth();
+            var day = d.getDate();
+            var hour = d.getHours();
+            var minutes = d.getMinutes();
+            return `${month}/${day}/${year} ${hour}:${minutes}`;
+        },
+        formatSize: (state, getters) => (size) => {
+            var size_in_mb = size / (1024*1024);
+            if(size_in_mb > 0.01) {
+                size_in_mb = (Math.round(size_in_mb * 100) / 100).toFixed(2);
+                console.log(size_in_mb.toString().split('').pop());
+                if(size_in_mb.toString().split('').pop() == "0") size_in_mb = (Math.round(size_in_mb * 100) / 100).toFixed(1);
+                return `${size_in_mb} Mb`
+            }
+            else return `${size} bytes`
+        },
+        isImage: (state, getters) => (file) =>{
+            switch(file.ext.toLowerCase()){
+                case ".png":
+                    return true;
+                case ".jpg":
+                    return true;
+                case ".gif":
+                    return true;
+                case ".jpeg":
+                    return true;
+                default:
+                    return false;
+            }
         },
         getIcon: (state, getters) => (file) =>{
             if(file.isFile == false) return "far fa-folder";
@@ -126,7 +160,8 @@ const store = new Vuex.Store({
                 .replace("#", "")
                 .replace(window.location.host, "")
                 .replace("http://", "")
-                .replace("https://", "");
+                .replace("https://", "")
+                .split('?')[0];
         },
         setFileStructure (state, fileStructure) {
             state.root = fileStructure;
