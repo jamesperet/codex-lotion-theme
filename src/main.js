@@ -4,6 +4,7 @@ import store from "./store.js";
 
 import folderView from './vue/folder-view.vue';
 import markdownView from './vue/markdown-view.vue';
+import errorView from './vue/error-view.vue';
 import breadcrumbs from './vue/breadcrumbs.vue';
 import sidebar from './vue/sidebar.vue';
 import sidebarFile from './vue/sidebar-file.vue';
@@ -15,6 +16,7 @@ new Vue({
     components: {
         "FolderView"   : folderView,
         "MarkdownView" : markdownView,
+        "ErrorView"    : errorView,
         "Breadcrumbs"  : breadcrumbs,
         "Sidebar"      : sidebar,
         "SidebarFile"  : sidebarFile,

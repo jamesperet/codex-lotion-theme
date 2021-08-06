@@ -213,7 +213,8 @@
                         </nav>
                     </div>
                     <modals></modals>
-                    <router-view></router-view>
+                    <router-view v-show="!$store.getters.showError()"></router-view>
+                    <error-view v-show="$store.getters.showError()"></error-view>
                 </div>
             </div>
         </main>

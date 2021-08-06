@@ -6,9 +6,13 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         current_location : undefined,
-        root : []
+        root : [],
+        error : false
     },
     getters: {
+        showError: (state, getters) => () =>{
+            return state.error;
+        },
         getLocation: (state, getters) => () =>{
             return state.current_location;
         },
@@ -126,6 +130,9 @@ const store = new Vuex.Store({
         },
         setFileStructure (state, fileStructure) {
             state.root = fileStructure;
+        },
+        setErrorState (state, errorState) {
+            state.error = errorState;
         },
     },
     actions: {

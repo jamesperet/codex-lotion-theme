@@ -42,10 +42,12 @@ export default {
             var vm = this;
             axios.get(link).then(response => {
                 vm.module_data = response.data;
+                vm.$store.commit("setErrorState", false);
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
+                vm.$store.commit("setErrorState", true);
             })
             .then(function () {
                 // always executed

@@ -54,11 +54,13 @@ export default {
             this.$root.$emit('hide-save');
             axios.get(link).then(response => {
                 vm.folder_content = response.data.files;
+                vm.$store.commit("setErrorState", false);
                 vm.checkForIndex();
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
+                vm.$store.commit("setErrorState", true);
                 vm.$root.$emit('updated-breadcrumbs');
                 vm.$root.$emit('updated-sidebar');
             })
