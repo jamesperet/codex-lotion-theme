@@ -86,7 +86,7 @@ export default {
             if(foundIndex == false){
                 this.$root.$emit('updated-breadcrumbs');
                 this.$root.$emit('updated-sidebar');
-                this.$store.getters.setLocation(window.location.href);
+                this.$store.commit("setLocation", window.location.href);
             }
         },
         goToPath: function(path){

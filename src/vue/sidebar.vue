@@ -56,11 +56,11 @@ export default {
                 if(this.current_path == link) return;
             }
             this.current_path = link;
-            axios.get("/api/routes").then(response => {
-                if(this.refresh_view){
-                    this.current_directory = [];
-                }
-                response.data.files.forEach(element => {
+            if(this.refresh_view){
+                this.current_directory = [];
+            }
+            this.$store.dispatch('getFileStructure').then((file_structure) => {
+                file_structure.forEach(element => {
                     //console.log(element);
                     element.opened = false;
                     var duplicate = false;
@@ -72,7 +72,7 @@ export default {
                 });
                 this.refresh_view = false;
                 this.openSidebarToPath();
-            });
+            }).catch(err => { });
         },
         openSidebarToPath: function() {
             var link = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "").replace("#", "");

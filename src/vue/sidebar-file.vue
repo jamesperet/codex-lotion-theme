@@ -3,9 +3,9 @@
         <a :id="getId()"
             class="list-group-item list-group-item-action text-truncate" 
             :class="isCurrentLocation ? 'active' : ''" aria-current="true" style="cursor: pointer;">
-                <span v-bind:style="{ marginLeft: depth * 14 + (!content.isFile ? 14 : 0) + 'px' }"></span>
-                <div v-if="content.opened && content.isFile" v-on:click="closeFolder()" class="arrow-down"></div>
-                <div v-if="!content.opened && content.isFile" v-on:click="openFolder()" class="arrow-right"></div>
+                <span v-bind:style="{ marginLeft: depth * 14 + (content.isFile ? 14 : 0) + 'px' }"></span>
+                <div v-if="content.opened && !content.isFile" v-on:click="closeFolder()" class="arrow-down"></div>
+                <div v-if="!content.opened && !content.isFile" v-on:click="openFolder()" class="arrow-right"></div>
                 <span class="file-icon">
                     <i :class="$store.getters.getIcon(content)"></i>
                 </span>

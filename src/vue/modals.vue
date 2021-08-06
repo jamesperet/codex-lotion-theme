@@ -42,6 +42,48 @@
             </div>
         </div>
 
+        <!-- RenameModal -->
+        <div class="modal fade" id="RenameModal" tabindex="-1" aria-labelledby="RenameModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="RenameModalLabel">Rename {{current_path_type}}</h5>
+                    <a class="badge-link" data-bs-dismiss="modal" aria-label="Close" style="margin-top: 2px;">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <input type="name" v-model="newName" class="form-control" id="newName" placeholder="new-example-name">
+                </div>
+                <div class="modal-footer">
+                    <a  class="badge-link" data-bs-dismiss="modal">Cancel</a>
+                    <a class="badge-link" data-bs-dismiss="modal" v-on:click="rename()">Rename</a>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MoveModal -->
+        <div class="modal fade" id="MoveModal" tabindex="-1" aria-labelledby="MoveModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="MoveModalLabel">Move {{current_path_type}}</h5>
+                    <a class="badge-link" data-bs-dismiss="modal" aria-label="Close" style="margin-top: 2px;">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <input type="name" v-model="newPath" class="form-control" id="newPath" placeholder="new-path/example-folder">
+                </div>
+                <div class="modal-footer">
+                    <a  class="badge-link" data-bs-dismiss="modal">Cancel</a>
+                    <a class="badge-link" data-bs-dismiss="modal" v-on:click="move()">Move</a>
+                </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -52,7 +94,10 @@ export default {
     data: function () {
         return {
             folderName: "",
-            fileName: ""
+            fileName: "",
+            newName: "",
+            newPath: "",
+            current_path_type: ""
         }
     },
     props: [],
@@ -99,6 +144,24 @@ export default {
                 console.log(response);
                 console.log("new file created in " + path);
                 router.push({path: path}).catch(err => { console.log(err)});
+                this.$root.$emit('refresh-sidebar');
+                this.$root.$emit('updated-content');
+            }).catch(err => { console.log(err)});
+        },
+        rename: function(){
+            var path = this.$store.getters.getLocationCurrent();
+            var new_path = "";
+            var location_data = this.$store.getters.getLocationData(path);
+            if(location_data.isFile){
+                new_path = this.$store.getters.getLocationPath() + this.newName + location_data.ext;
+            } else {
+                new_path = location_data.folder + this.newName;
+            }
+            var payload = { path: path, new_path: new_path };
+            console.log(payload);
+            this.$store.dispatch('move', payload).then((response) => {
+                console.log(response);
+                router.push({path: new_path}).catch(err => { console.log(err)});
                 this.$root.$emit('refresh-sidebar');
                 this.$root.$emit('updated-content');
             }).catch(err => { console.log(err)});

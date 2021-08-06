@@ -54,7 +54,7 @@ export default {
                 vm.$root.$emit('updated-links');
                 vm.$root.$emit('hide-save');
                 if(window.location.href.split('.').pop() == "md"){
-                    vm.$store.getters.setLocation(window.location.href);
+                    vm.$store.commit("setLocation", window.location.href);
                     console.log("markdown view location: " +  vm.$store.getters.getLocation());
                 }
                 vm.editor_container = document.querySelector("#editor");

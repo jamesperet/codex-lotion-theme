@@ -5,7 +5,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        current_location : undefined
+        current_location : undefined,
+        root : []
     },
     getters: {
         getLocation: (state, getters) => () =>{
@@ -23,15 +24,36 @@ const store = new Vuex.Store({
             if(f.includes(".")) path = path.replace(f, "");
             return path;
         },
-        setLocation: (state, getters) => (location) =>{
-            state.current_location = location
-                .replace("#", "")
-                .replace(window.location.host, "")
-                .replace("http://", "")
-                .replace("https://", "");
+        getLocationData: (state, getters) => (path) =>{
+            var locations = [];
+            var parts = path.split("/");
+            for (let p = 0; p < parts.length; p++) {
+                if(parts[p] != "") locations.push(parts[p]);
+            }
+            console.log(locations);
+            var lookup = function(list, target){
+                for (let i = 0; i < list.length; i++) {
+                    if(list[i].name == target) return list[i];
+                }
+                return undefined;
+            }
+            var list = state.root;
+            var data = {}
+            for (let l = 0; l < locations.length; l++) {
+                if(locations[l] == "") continue;
+                var result = lookup(list, locations[l]);
+                if(result != undefined) {
+                    if(l == locations.length - 1) {
+                        data = result;
+                        break;
+                    }
+                    if(result.folder_contents != undefined) list = result.folder_contents;
+                }
+            }
+            return data;
         },
         getIcon: (state, getters) => (file) =>{
-            if(file.isFile == true) return "far fa-folder";
+            if(file.isFile == false) return "far fa-folder";
             switch(file.ext.toLowerCase()){
                 case "":
                     return "far fa-folder";
@@ -95,7 +117,18 @@ const store = new Vuex.Store({
             }
         }
     },
-    mutations: {},
+    mutations: {
+        setLocation (state, location) {
+            state.current_location = location
+                .replace("#", "")
+                .replace(window.location.host, "")
+                .replace("http://", "")
+                .replace("https://", "");
+        },
+        setFileStructure (state, fileStructure) {
+            state.root = fileStructure;
+        },
+    },
     actions: {
         testAction ({ commit }) {
             return new Promise((resolve, reject) => {
@@ -105,6 +138,18 @@ const store = new Vuex.Store({
                     data = "done!";
                     resolve(data);
                 }, 1000)
+            })
+        },
+        getFileStructure ({commit}) {
+            return new Promise((resolve, reject) => {
+                axios.get("/api/routes").then(response => {
+                    commit("setFileStructure", response.data.files);
+                    resolve(response.data.files);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    reject(error);
+                });
             })
         },
         createFile ({ commit }, data) {
@@ -131,6 +176,20 @@ const store = new Vuex.Store({
                 })
                 .catch(function (error) {
                     console.log("Error creating folder " + path);
+                    console.log(error);
+                    reject(error);
+                })
+            })
+        },
+        move ({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                var link = "http://" + window.location.host + "/api/move";
+                console.log("Moving " + data.path + " => " + data.new_path + "(" + link + ")");
+                axios.post(link, data).then(response => {
+                    resolve(response);
+                })
+                .catch(function (error) {
+                    console.log("Error moving " + data.path);
                     console.log(error);
                     reject(error);
                 })
