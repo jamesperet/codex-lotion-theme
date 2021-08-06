@@ -30,7 +30,6 @@ const store = new Vuex.Store({
             for (let p = 0; p < parts.length; p++) {
                 if(parts[p] != "") locations.push(parts[p]);
             }
-            console.log(locations);
             var lookup = function(list, target){
                 for (let i = 0; i < list.length; i++) {
                     if(list[i].name == target) return list[i];

@@ -102,18 +102,36 @@ export default {
     },
     props: [],
     created: function() {
-        this.$root.$on('?', ()=>{});
+        console.log("Creating modals component");
+        this.$root.$on('updated-content', this.updateModals);
+        
         // Enable stuff
         this.$nextTick(function () {
-            var myModal = document.getElementById('CreateFolderModal')
-            var myInput = document.getElementById('folderName')
-            myModal.addEventListener('shown.bs.modal', function () {
-                myInput.focus()
+            var createFolderModal = document.getElementById('CreateFolderModal')
+            var folderNameInput = document.getElementById('folderName')
+            createFolderModal.addEventListener('shown.bs.modal', function () {
+                folderNameInput.focus();
             })
+            var createFileModal = document.getElementById('CreateFileModal')
+            var fileNameInput = document.getElementById('fileName')
+            createFileModal.addEventListener('shown.bs.modal', function () {
+                fileNameInput.focus();
+            })
+            var renameModal = document.getElementById('RenameModal')
+            var newNameInput = document.getElementById('newName')
+            renameModal.addEventListener('shown.bs.modal', function () {
+                newNameInput.focus();
+            })
+            var moveModal = document.getElementById('MoveModal')
+            var newPathInput = document.getElementById('newPath')
+            moveModal.addEventListener('shown.bs.modal', function () {
+                newPathInput.focus();
+            });
+            this.updateModals();
         });
     },
     beforeDestroy: function() {
-        this.$root.$off('?', ()=>{});
+        this.$root.$off('updated-content', this.updateModals);
     },
     updated: function() {
         
@@ -122,11 +140,20 @@ export default {
         
     },
     methods: {
+        updateModals: function(){
+            var current_loc = this.$store.getters.getLocationCurrent();
+            //console.log("updating modals data for " + current_loc);
+            this.newName = this.$store.getters.getLocationData(current_loc).name;
+            this.newPath = this.$store.getters.getLocationData(current_loc).folder;
+            if(this.newName == undefined && this.newPath == undefined){
+                setTimeout(this.updateModals, 500);
+            }
+        },
         createFile: function(ext){
             var path = this.$store.getters.getLocationPath();
             var payload = { path: path, filename: this.fileName + ext, content: "" };
             this.$store.dispatch('createFile', payload).then((response) => {
-                console.log(response);
+                //console.log(response);
                 var newPath = path + this.fileName + ext;
                 this.fileName = "";
                 console.log("new file created in " + newPath);
@@ -139,10 +166,10 @@ export default {
             var path = this.$store.getters.getLocationPath();
             path = path + this.folderName;
             var payload = { path: path };
-            console.log(payload);
             this.$store.dispatch('createFolder', payload).then((response) => {
-                console.log(response);
+                //console.log(response);
                 console.log("new file created in " + path);
+                this.folderName = "";
                 router.push({path: path}).catch(err => { console.log(err)});
                 this.$root.$emit('refresh-sidebar');
                 this.$root.$emit('updated-content');
@@ -158,10 +185,26 @@ export default {
                 new_path = location_data.folder + this.newName;
             }
             var payload = { path: path, new_path: new_path };
+            this.changePath(payload);
+        },
+        move: function(){
+            var path = this.$store.getters.getLocationCurrent();
+            var new_path = "";
+            var location_data = this.$store.getters.getLocationData(path);
+            if(location_data.isFile){
+                new_path =  "/" + this.newPath + "/" + location_data.name;
+            } else {
+                new_path = "/" + this.newPath + "/" + location_data.name;
+            }
+            var payload = { path: path, new_path: new_path };
+            this.changePath(payload);
+        },
+        changePath: function(payload){
+            payload.new_path = payload.new_path.replaceAll("//", "/");
             console.log(payload);
             this.$store.dispatch('move', payload).then((response) => {
                 console.log(response);
-                router.push({path: new_path}).catch(err => { console.log(err)});
+                router.push({path: payload.new_path}).catch(err => { console.log(err)});
                 this.$root.$emit('refresh-sidebar');
                 this.$root.$emit('updated-content');
             }).catch(err => { console.log(err)});
