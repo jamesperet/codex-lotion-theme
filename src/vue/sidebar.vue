@@ -44,13 +44,14 @@ export default {
     },
     beforeDestroy: function() {
         this.$root.$off('updated-sidebar', this.getCurrentDirectory);
-        this.$root.$on('refresh-sidebar', this.refreshView);
+        this.$root.$off('refresh-sidebar', this.refreshView);
     },
     updated: function() {
         
     },
     methods: {
         getCurrentDirectory: function() {
+            console.log("Updating sidebar");
             var link = window.location.href.replace("#", "") + "?list=true";
             if(!this.refresh_view){
                 if(this.current_path == link) return;

@@ -69,7 +69,7 @@ const store = new Vuex.Store({
             var size_in_mb = size / (1024*1024);
             if(size_in_mb > 0.01) {
                 size_in_mb = (Math.round(size_in_mb * 100) / 100).toFixed(2);
-                console.log(size_in_mb.toString().split('').pop());
+                //console.log(size_in_mb.toString().split('').pop());
                 if(size_in_mb.toString().split('').pop() == "0") size_in_mb = (Math.round(size_in_mb * 100) / 100).toFixed(1);
                 return `${size_in_mb} Mb`
             }
@@ -88,6 +88,22 @@ const store = new Vuex.Store({
                 default:
                     return false;
             }
+        },
+        getIconFromPath: (state, getters) => (path) => {
+            var parts = path.split(".");
+            var ext = "";
+            var isFile = false;
+            if(parts.length > 1) {
+                ext = parts.pop();
+                isFile = true;
+            } else {
+                isFile = false;
+            }
+            var dummyFile = {
+                isFile : isFile,
+                ext : "." + ext
+            }
+            return getters.getIcon(dummyFile);
         },
         getIcon: (state, getters) => (file) =>{
             if(file.isFile == false) return "far fa-folder";
@@ -149,7 +165,7 @@ const store = new Vuex.Store({
                 case ".html":
                     return "fas fa-file-code";
                 default:
-                    console.log(file.ext);
+                    //console.log(file.ext);
                     return "fas fa-file";
             }
         }

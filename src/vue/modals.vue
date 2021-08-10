@@ -85,33 +85,17 @@
         </div>
 
         <!-- UploadModal -->
-        <div class="modal fade" id="UploadModal" tabindex="-1" aria-labelledby="UploadModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="UploadModalLabel">Upload files</h5>
-                    <a class="badge-link" data-bs-dismiss="modal" aria-label="Close" style="margin-top: 2px;">
-                        <i class="fas fa-times"></i>
-                    </a>
-                </div>
-                <div class="modal-body">
-                    
-                </div>
-                <div class="modal-footer">
-                    <a  class="badge-link" data-bs-dismiss="modal">Cancel</a>
-                    <a class="badge-link" data-bs-dismiss="modal" v-on:click="upload()">Upload</a>
-                </div>
-                </div>
-            </div>
-        </div>
+        <uploader></uploader>
 
     </div>
 </template>
 
 <script>
 import router from "./../router.js";
+import uploader from "./uploader.vue";
 export default {
     name: "Modals",
+    components: { 'uploader' : uploader },
     data: function () {
         return {
             folderName: "",
@@ -125,7 +109,6 @@ export default {
     created: function() {
         console.log("Creating modals component");
         this.$root.$on('updated-content', this.updateModals);
-        
         // Enable stuff
         this.$nextTick(function () {
             var createFolderModal = document.getElementById('CreateFolderModal')

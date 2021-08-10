@@ -28,7 +28,11 @@
                         <i class="fas fa-file-alt"></i>New Markdown file
                     </a>
                 </li>
-                <li><a class="dropdown-item disabled" href="#"><i class="fas fa-upload"></i>File Upload</a></li>
+                <li>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#UploadModal">
+                        <i class="fas fa-upload"></i>File Upload
+                    </a>
+                </li>
             </ul>
         </div>
 

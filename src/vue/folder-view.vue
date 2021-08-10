@@ -24,11 +24,13 @@ export default {
         return {
             folder_content: "",
             current_path : undefined,
+            refresh_view : false
         }
     },
     created: function() {
         console.log("Creating folder view");
         this.$root.$on('updated-content', this.getFolderContents);
+        this.$root.$on('refresh-content', this.refreshFolderContents);
         var vm = this;
         window.addEventListener("popstate", function(event) {
             vm.getFolderContents();
@@ -38,6 +40,7 @@ export default {
     beforeDestroy: function() {
         console.log("Destroying folder view");
         this.$root.$off('updated-content', this.getFolderContents);
+        this.$root.$off('refresh-content', this.refreshFolderContents);
     },
     updated: function() {
         //this.getFolderContents();
@@ -48,9 +51,11 @@ export default {
             var vm = this;
             var loc = this.$store.getters.getLocationCurrent();
             var base_loc = this.$store.getters.getLocationPath();
-            if(loc != base_loc && loc != base_loc + "index.md") return;
-            if(link == this.current_path) return;
-            else this.current_path = link;
+            if(this.refresh_view == false){
+                if(loc != base_loc && loc != base_loc + "index.md") return;
+                if(link == this.current_path) return;
+            } else this.refresh_view = true;
+            this.current_path = link;
             this.$root.$emit('hide-save');
             axios.get(link).then(response => {
                 vm.folder_content = response.data.files;
@@ -99,6 +104,9 @@ export default {
         getBaseRoute: function(){
             return window.location.href.replace(window.location.host, "").replace("http://", "")
                 .replace("https://", "").replace("index.md", "");
+        },
+        refreshFolderContents: function(){
+            this.refresh_view = true;
         }
     },
     computed: {

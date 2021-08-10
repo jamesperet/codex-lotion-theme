@@ -11,19 +11,21 @@ import sidebar from './vue/sidebar.vue';
 import sidebarFile from './vue/sidebar-file.vue';
 import toolbar from './vue/toolbar.vue';
 import modals from './vue/modals.vue';
+import uploader from './vue/uploader.vue';
 
 new Vue({
     el: '#app',
     components: {
-        "FolderView"   : folderView,
-        "MarkdownView" : markdownView,
-        "FileView"     : fileView,
-        "ErrorView"    : errorView,
-        "Breadcrumbs"  : breadcrumbs,
-        "Sidebar"      : sidebar,
-        "SidebarFile"  : sidebarFile,
-        "Toolbar"      : toolbar,
-        "Modals"       : modals
+        "FolderView"         : folderView,
+        "MarkdownView"       : markdownView,
+        "FileView"           : fileView,
+        "ErrorView"          : errorView,
+        "Breadcrumbs"        : breadcrumbs,
+        "Sidebar"            : sidebar,
+        "SidebarFile"        : sidebarFile,
+        "Toolbar"            : toolbar,
+        "Modals"             : modals,
+        "Uploader"           : uploader
     },
     store: store,
     router: router,
@@ -78,6 +80,13 @@ new Vue({
                     this.$root.$emit('updated-content');
                 }
             }
+        },
+        refreshViews: function() {
+            console.log("Refreshing views...");
+            this.$root.$emit('refresh-sidebar');
+            this.$root.$emit('refresh-content');
+            this.$root.$emit('updated-content');
+            this.$root.$emit('updated-sidebar');
         }
     }
 });
