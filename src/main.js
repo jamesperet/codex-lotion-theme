@@ -12,6 +12,7 @@ import sidebarFile from './vue/sidebar-file.vue';
 import toolbar from './vue/toolbar.vue';
 import modals from './vue/modals.vue';
 import uploader from './vue/uploader.vue';
+import user from './vue/user.vue';
 
 new Vue({
     el: '#app',
@@ -25,7 +26,8 @@ new Vue({
         "SidebarFile"        : sidebarFile,
         "Toolbar"            : toolbar,
         "Modals"             : modals,
-        "Uploader"           : uploader
+        "Uploader"           : uploader,
+        "User"               : user
     },
     store: store,
     router: router,

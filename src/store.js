@@ -7,11 +7,15 @@ const store = new Vuex.Store({
     state: {
         current_location : undefined,
         root : [],
-        error : false
+        error : false,
+        user : undefined
     },
     getters: {
         showError: (state, getters) => () =>{
             return state.error;
+        },
+        getUser: (state, getters) => () =>{
+            return state.user;
         },
         getLocation: (state, getters) => () =>{
             return state.current_location;
@@ -185,6 +189,9 @@ const store = new Vuex.Store({
         setErrorState (state, errorState) {
             state.error = errorState;
         },
+        setUser (state, user) {
+            state.user = user;
+        },
     },
     actions: {
         testAction ({ commit }) {
@@ -303,7 +310,23 @@ const store = new Vuex.Store({
                     link.download = data.label
                     link.click()
                     URL.revokeObjectURL(link.href)
-                }).catch(console.error);
+                    resolve();
+                }).catch((err) => {
+                    console.log(err);
+                    reject;
+                });
+            });
+        },
+        requestUserData ({ commit }) {
+            return new Promise((resolve, reject) => {
+                axios.get('/api/user')
+                .then(response => {
+                    commit("setUser", response.data.user);
+                    resolve();
+                }).catch((err) => {
+                    console.log(err);
+                    reject();
+                });
             });
         },
     }
