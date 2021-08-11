@@ -46,15 +46,7 @@ class LotionTheme {
       for (let i = 0; i < files.length; i++) {
         this.server.express.get(files[i].route, function (req, res) {
           var file = path.join(path.dirname(fs.realpathSync(__filename)), files[i].path);
-          res.sendFile(file, function(err){
-            if (err) {
-              _this.server.cli.log("> Error: " + file + " - file not found");
-              res.status(err.status).end();
-            }
-            else {
-              _this.server.cli.log('> Sending ' + file +  _this.server.printUser(req));
-            }
-          });
+          _this.server.sendFile(req, res, file);
         });
       }
       this.server.express.get("/api/routes", function (req, res) {

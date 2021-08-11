@@ -7,7 +7,7 @@
             Updated: {{$store.getters.formatDate(file_data.mtime)}}<br>
             Size: {{$store.getters.formatSize(file_data.size)}}
         </p>
-        <a v-on:click="downloadFile(file_data.folder + file_data.name + '?view=content')" class="badge-link execute-default">
+        <a v-on:click="downloadFile(file_data.folder + file_data.name + '?view=content', file_data.name)" class="badge-link execute-default">
             Download File
         </a>
         </div>
@@ -74,8 +74,12 @@ export default {
                 
             });
         },
-        downloadFile: function(link){
-            window.location.href = link;
+        downloadFile: function(link, label){
+            //window.location.href = link;
+            this.$store.dispatch('download', { url : link, label: label})
+            .then((response) => {
+                console.log("Downloading file...");
+            }).catch(err => { console.log(err)});
         }
     }
 }

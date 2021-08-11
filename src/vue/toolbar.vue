@@ -53,7 +53,12 @@
                     </a>
                 </li> -->
                 <!-- <li><a class="dropdown-item" href="#"><i class="fas fa-link"></i>Copy link</a></li> -->
-                <li><a class="dropdown-item disabled" href="#"><i class="fas fa-file-export"></i>Export</a></li>
+                <!-- <li><a class="dropdown-item disabled" href="#"><i class="fas fa-file-export"></i>Export</a></li> -->
+                <li>
+                    <a class="dropdown-item" href="#" v-on:click="download()">
+                        <i class="fas fa-download"></i>Download
+                    </a>
+                </li>
                 <!-- <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="#"><i class="fas fa-undo-alt"></i>Undo</a></li>
                 <li><a class="dropdown-item" href="#"><i class="fas fa-redo-alt"></i>Redo</a></li>
@@ -140,6 +145,45 @@ export default {
                 router.push({path: newPath}).catch(err => { console.log(err)});
                 this.$root.$emit('refresh-sidebar');
                 this.$root.$emit('updated-content');
+            }).catch(err => { console.log(err)});
+        },
+        download: function() {
+            var path = this.$store.getters.getLocationCurrent();
+            var path_data = this.$store.getters.getLocationData(path);
+            var path_list = [];
+            var title = "";
+            if(path_data.isFile) {
+                path_list.push(path_data.folder + path_data.name);
+                title = path_data.name.split('.')[0];
+                console.log(path_data);
+                var fileDownloadPath = window.location.protocol + '//' + window.location.host
+                fileDownloadPath += ("/" + path_data.folder + path_data.name).replace('//', '/');
+                fileDownloadPath += '?view=raw';
+                console.log(fileDownloadPath);
+                this.$store.dispatch('download', { url : fileDownloadPath, label: path_data.name})
+                .then((response) => {
+                    console.log("Downloading file...");
+                }).catch(err => { console.log(err)});
+                return;
+            }
+            else {
+                // Current path is folder so add all files and child files into a path list
+                title = path_data.name;
+                var add_paths = function(path_data_list){
+                    for (let i = 0; i < path_data_list.length; i++) {
+                        const element = path_data_list[i];
+                        path_list.push(element.folder + element.name);
+                        if(!element.isFile) {
+                            add_paths(element.folder_contents);
+                        }
+                    }
+                }
+                add_paths(path_data.folder_contents);
+            }
+            var payload = { paths: path_list, title: title};
+            this.$store.dispatch('archive', payload).then((response) => {
+                console.log("archiving response:", response);
+                window.location.href = "/" + response.data.archive_path;
             }).catch(err => { console.log(err)});
         }
     },

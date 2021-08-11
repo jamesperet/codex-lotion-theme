@@ -267,6 +267,45 @@ const store = new Vuex.Store({
                 })
             })
         },
+        archive ({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                var link = "http://" + window.location.host + "/api/archive";
+                var file_list = data.paths;
+                var payload = {
+                    method: 'post',
+                    url: link,
+                    data: {
+                      title: data.title,
+                      paths: file_list
+                    },
+                    headers: { 'content-type': 'application/json' },
+                    responseType: 'json'
+                }
+                console.log("Archiving:", file_list);
+                console.log("Archiving server payload:", payload);
+                axios(link, payload).then(response => {
+                    resolve(response);
+                })
+                .catch(function (error) {
+                    console.log("Error archiving files:", file_list);
+                    console.log(error);
+                    reject(error);
+                })
+            })
+        },
+        download ({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                axios.get(data.url, { responseType: 'blob' })
+                .then(response => {
+                    const blob = new Blob([response.data])
+                    const link = document.createElement('a')
+                    link.href = URL.createObjectURL(blob)
+                    link.download = data.label
+                    link.click()
+                    URL.revokeObjectURL(link.href)
+                }).catch(console.error);
+            });
+        },
     }
 });
 
