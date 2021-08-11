@@ -1,5 +1,6 @@
 <template>
-    <div v-if="user != undefined" style="padding-left: 12px; padding-right: 12px padding-bottom: 12px; margin-bottom: 12px;">
+    <footer v-if="user != undefined" class="footer mt-auto py-3" style="padding-left: 12px; padding-right: 12px padding-bottom: 8px;">
+        <hr style="margin-left: -12px;">
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                 <img :src="user.picture" alt="" width="32" height="32" class="rounded-circle me-2">
@@ -13,7 +14,7 @@
                 <li><a v-on:click="logout()" class="dropdown-item" href="">Sign out</a></li>
             </ul>
         </div>
-    </div>
+    </footer>
 </template>
 
 <script>

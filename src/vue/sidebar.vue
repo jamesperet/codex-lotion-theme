@@ -1,10 +1,17 @@
 <template>
-    <div class="sidebar">
-        <div class="divider-text" style="margin-top: 12px;">FILES</div>
-        <div class="list-group list-group-flush">
+    <div class="sidebar d-flex flex-column" style="height: 100%;">
+        <a href="/" class="d-flex align-items-center text-white text-decoration-none" 
+            style="padding: 12px; padding-left: 15px; padding-bottom: 0px;">
+            <span class="fa-stack fa-2x">
+                <i class="fas fa-square fa-stack-2x" style="color: gray"></i>
+                <i class="fas fa-book fa-stack-1x"></i>
+            </span>
+            <span class="fs-7 text-truncate" style="margin-top: -2px;">James Peret's Codex</span>
+        </a>
+        <div class="divider-text" style="margin-top: 4px;">FILES</div>
+        <div class="list-group list-group-flush flex-shrink-0">
             <sidebar-file v-for="file in current_directory" :key="file.key" v-bind:content="file" v-bind:depth="0"></sidebar-file>
         </div>
-        <hr>
         <user></user>
     </div>
 </template>

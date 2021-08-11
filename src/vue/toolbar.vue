@@ -17,20 +17,20 @@
                 aria-expanded="false">
                 <i class="fas fa-plus"></i>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark text-small shadow fa-ul" aria-labelledby="dropdownUser1">
                 <li>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#CreateFolderModal">
-                        <i class="fas fa-folder"></i>New folder
+                        <span class="fa-li"><i class="fas fa-folder"></i></span> <span class="title">folder</span>
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#CreateFileModal">
-                        <i class="fas fa-file-alt"></i>New Markdown file
+                        <span class="fa-li"><i class="fas fa-file-alt"></i></span> <span class="title">Markdown file</span>
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#UploadModal">
-                        <i class="fas fa-upload"></i>File Upload
+                        <span class="fa-li"><i class="fas fa-upload"></i></span> <span class="title">Upload</span>
                     </a>
                 </li>
             </ul>
@@ -47,7 +47,7 @@
                 <i class="fas fa-ellipsis-h" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-html="true" 
                     title="File and <br>folder actions"></i>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark text-small shadow fa-ul" aria-labelledby="dropdownUser1">
                 <!-- <li><a class="dropdown-item" href="#" v-on:click="testStoreAction()">
                         <i class="far fa-star"></i>Add to favorites
                     </a>
@@ -56,7 +56,7 @@
                 <!-- <li><a class="dropdown-item disabled" href="#"><i class="fas fa-file-export"></i>Export</a></li> -->
                 <li>
                     <a class="dropdown-item" href="#" v-on:click="download()">
-                        <i class="fas fa-download"></i>Download
+                        <span class="fa-li"><i class="fas fa-download"></i></span> <span class="title">Download</span>
                     </a>
                 </li>
                 <!-- <li><hr class="dropdown-divider"></li>
@@ -65,17 +65,17 @@
                 <li><hr class="dropdown-divider"></li> -->
                 <li>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#RenameModal">
-                        <i class="fas fa-tag"></i>Rename
+                        <span class="fa-li"><i class="fas fa-tag"></i></span> <span class="title">Rename</span>
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#MoveModal">
-                        <i class="fas fa-level-down-alt"></i>Move to
+                        <span class="fa-li"><i class="fas fa-level-down-alt"></i></span> <span class="title">Move to</span>
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item" href="#" v-on:click="deleteCurrentPath()">
-                        <i class="fas fa-trash-alt"></i>Delete
+                        <span class="fa-li"><i class="fas fa-trash-alt"></i></span> <span class="title">Delete</span>
                     </a>
                 </li>
             </ul>
