@@ -5,10 +5,12 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
+        vm : undefined,
         current_location : undefined,
         root : [],
         error : false,
-        user : undefined
+        user : undefined,
+        activity_messages : []
     },
     getters: {
         showError: (state, getters) => () =>{
@@ -78,6 +80,9 @@ const store = new Vuex.Store({
                 return `${size_in_mb} Mb`
             }
             else return `${size} bytes`
+        },
+        getActivityMessages:  (state, getters) => (file) =>{
+            return state.activity_messages;
         },
         isImage: (state, getters) => (file) =>{
             switch(file.ext.toLowerCase()){
@@ -175,6 +180,9 @@ const store = new Vuex.Store({
         }
     },
     mutations: {
+        setVm (state, vm) {
+            state.vm = vm;
+        },
         setLocation (state, location) {
             state.current_location = location
                 .replace("#", "")
@@ -192,6 +200,22 @@ const store = new Vuex.Store({
         setUser (state, user) {
             state.user = user;
         },
+        setActivityMessage (state, message){
+            for (let i = 0; i < state.activity_messages.length; i++) {
+                const msg = state.activity_messages[i];
+                if(msg.id == message.id) {
+                    state.activity_messages[i] = message;
+                    state.vm.$root.$emit('update-activity-messages');
+                    return;
+                }
+            }
+            state.activity_messages.push(message);
+            state.vm.$root.$emit('update-activity-messages');
+        },
+        removeActivityMessage (state, message){
+            var index = state.activity_messages.findIndex(e => e.id === message.id);
+            state.activity_messages.splice(index, 1);
+        }
     },
     actions: {
         testAction ({ commit }) {

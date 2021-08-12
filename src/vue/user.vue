@@ -11,7 +11,11 @@
                 <li><a class="dropdown-item" href="#">Settings</a></li>
                 <li><a class="dropdown-item" href="#">Profile</a></li>
                 <li><hr class="dropdown-divider"></li> -->
-                <li><a v-on:click="logout()" class="dropdown-item" href="">Sign out</a></li>
+                <li>
+                    <a v-on:click="logout()" class="dropdown-item" href="">
+                        <i class="fas fa-sign-out-alt"></i> Sign out
+                    </a>
+                </li>
             </ul>
         </div>
     </footer>

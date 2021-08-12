@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar d-flex flex-column" style="height: 100%;">
         <a href="/" class="d-flex align-items-center text-white text-decoration-none" 
-            style="padding: 12px; padding-left: 15px; padding-bottom: 0px;">
+            style="padding: 13px 12px 8px 16px;">
             <span class="fa-stack fa-2x">
                 <i class="fas fa-square fa-stack-2x" style="color: gray"></i>
                 <i class="fas fa-book fa-stack-1x"></i>

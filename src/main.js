@@ -11,6 +11,7 @@ import sidebar from './vue/sidebar.vue';
 import sidebarFile from './vue/sidebar-file.vue';
 import toolbar from './vue/toolbar.vue';
 import modals from './vue/modals.vue';
+import activityMessages from './vue/activity-messages.vue';
 import uploader from './vue/uploader.vue';
 import user from './vue/user.vue';
 
@@ -26,6 +27,7 @@ new Vue({
         "SidebarFile"        : sidebarFile,
         "Toolbar"            : toolbar,
         "Modals"             : modals,
+        "ActivityMessages"   : activityMessages,
         "Uploader"           : uploader,
         "User"               : user
     },
@@ -37,6 +39,7 @@ new Vue({
     },
     created: function() {
         console.log("Creating folder view");
+        this.$store.commit("setVm", this);
         this.$root.$on('updated-links', this.updateLinks);
     },
     beforeDestroy: function() {
