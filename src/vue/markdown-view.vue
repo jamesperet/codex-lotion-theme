@@ -2,20 +2,24 @@
     <div class="row justify-content-center" style="padding-top: 50px;">
         <div class="col-9">
             <!-- <div v-html="module_data"></div>  -->
-            <div id="editor"></div>
+            <editor-tip-tap ref="editor"></editor-tip-tap>
+            <!-- <editor-prosemirror ref="editor"></editor-prosemirror> -->
         </div>
     </div>
 </template>
 
 <script>
-import {MarkdownEditor, ProseMirrorView} from "./../editor/editor.js"
+//import editorProsemirror from "./editor-prosemirror.vue";
+import editorTipTap from "./editor-tiptap.vue";
 export default {
     name: "MarkdownView",
+    components: { 
+        //EditorProsemirror : editorProsemirror,
+        EditorTipTap : editorTipTap ,
+    },
     data: function () {
         return {
-            module_data: "",
-            editor_view : undefined,
-            editor_container : undefined
+            content: "",
         }
     },
     created: function() {
@@ -41,7 +45,7 @@ export default {
             var link = window.location.href.replace("#", "") + "?view=raw";
             var vm = this;
             axios.get(link).then(response => {
-                vm.module_data = response.data;
+                vm.content = response.data;
                 vm.$store.commit("setErrorState", false);
             })
             .catch(function (error) {
@@ -59,18 +63,39 @@ export default {
                     vm.$store.commit("setLocation", window.location.href);
                     console.log("markdown view location: " +  vm.$store.getters.getLocation());
                 }
-                vm.editor_container = document.querySelector("#editor");
-                vm.clearEditor();
-                //vm.editor_view = new MarkdownEditor(place, vm.module_data);
-                vm.editor_view = new ProseMirrorView(vm.editor_container, vm.module_data, vm);
+                vm.$refs.editor.clearEditor();
+                vm.$refs.editor.setEditor(vm.content);
             });
         },
-        clearEditor: function(){
-            if(this.editor_container != undefined) this.editor_container.innerHTML = "";
-        },
         saveDocument: function(){
-            //console.log("saving document...");
-            if(this.editor_view != undefined) this.editor_view.saveDocument();
+            var vm = this;
+            vm.content = vm.$refs.editor.getEditorDocument();
+            var link = window.location.href.replace("#", "");
+            var file_path = link.replace(window.location.protocol, '').replace(window.location.host, '')
+                .replace("///", "").replace("//", "");
+            console.log("Saving document (" + file_path + ")");
+            var data = vm.content;
+            data = data.replaceAll("\\", "");
+            console.log(data);
+            var id = file_path.replaceAll("/", "-").replaceAll(".", "-");
+            var msg = { id : id, text: `Saving \'${file_path}\'`, status: 'incomplete'}
+            vm.$store.commit("setActivityMessage", msg);
+            vm.$root.$emit('hide-save');
+            axios.post(link, { file: data }).then(response => {
+                console.log(response);
+                var success_msg = { id : id, text: `Saved \'${file_path}\'`, status: 'success'}
+                vm.$store.commit("setActivityMessage", success_msg);
+                vm.$root.$emit('updated-content');
+            })
+            .catch(function (error) {
+                console.log(error);
+                var error_msg = { id : id, text: `Error saving \'${file_path}\'`, status: 'error'}
+                vm.$store.commit("setActivityMessage", error_msg);
+                vm.$root.$emit('show-save');
+            })
+            .then(function () {
+            
+            });
         }
     }
 }

@@ -29,6 +29,7 @@ var files = [
   { route: "/sidebar-file.vue", path: "views/vue/sidebar-file.vue" },
   { route: "/toolbar.vue", path: "views/vue/toolbar.vue" },
   { route: "/bundle.js", path: "views/files/bundle.js" },
+  { route: "/atom-one-dark.css", path: "views/files/atom-one-dark.css" },
 ]
 
 class LotionTheme {

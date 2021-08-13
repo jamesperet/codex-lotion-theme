@@ -15,6 +15,7 @@ import activityMessages from './vue/activity-messages.vue';
 import uploader from './vue/uploader.vue';
 import user from './vue/user.vue';
 
+
 new Vue({
     el: '#app',
     components: {
@@ -35,6 +36,7 @@ new Vue({
     router: router,
     data: function () {
             return {  
+                hljs : hljs
         }
     },
     created: function() {
