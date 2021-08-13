@@ -155,29 +155,41 @@ export default {
         },
         createFile: function(ext){
             var path = this.$store.getters.getLocationPath();
+            var file_path = path + this.fileName + ext
             var payload = { path: path, filename: this.fileName + ext, content: "" };
+            var id = this.$store.getters.createId(file_path);
+            this.$store.commit("setActivityMessage", { id : id, text: `Creating file \'${file_path}\'`, status: 'incomplete'} );
             this.$store.dispatch('createFile', payload).then((response) => {
                 //console.log(response);
-                var newPath = path + this.fileName + ext;
+                this.$store.commit("setActivityMessage", { id : id, text: `Created file \'${file_path}\'`, status: 'success'} );
                 this.fileName = "";
-                console.log("new file created in " + newPath);
-                router.push({path: newPath}).catch(err => { console.log(err)});
+                console.log("new file created in " + file_path);
+                router.push({path: file_path}).catch(err => { console.log(err)});
                 this.$root.$emit('refresh-sidebar');
                 this.$root.$emit('updated-content');
-            }).catch(err => { console.log(err)});
+            }).catch(err => { 
+                console.log(err);
+                this.$store.commit("setActivityMessage", { id : id, text: `Error creating file \'${file_path}\'`, status: 'error', error : err} );
+            });
         },
         createFolder: function(){
             var path = this.$store.getters.getLocationPath();
             path = path + this.folderName;
             var payload = { path: path };
+            var id = this.$store.getters.createId(path);
+            this.$store.commit("setActivityMessage", { id : id, text: `Creating folder \'${path}\'`, status: 'incomplete'} );
             this.$store.dispatch('createFolder', payload).then((response) => {
                 //console.log(response);
+                this.$store.commit("setActivityMessage", { id : id, text: `Created folder \'${path}\'`, status: 'success'} );
                 console.log("new file created in " + path);
                 this.folderName = "";
                 router.push({path: path}).catch(err => { console.log(err)});
                 this.$root.$emit('refresh-sidebar');
                 this.$root.$emit('updated-content');
-            }).catch(err => { console.log(err)});
+            }).catch(err => { 
+                console.log(err)
+                this.$store.commit("setActivityMessage", { id : id, text: `Error creating folder \'${path}\'`, status: 'error', error : err} );
+            });
         },
         rename: function(){
             var path = this.$store.getters.getLocationCurrent();
@@ -189,7 +201,7 @@ export default {
                 new_path = location_data.folder + this.newName;
             }
             var payload = { path: path, new_path: new_path };
-            this.changePath(payload);
+            this.changePath(payload, 'rename');
         },
         move: function(){
             var path = this.$store.getters.getLocationCurrent();
@@ -201,17 +213,36 @@ export default {
                 new_path = "/" + this.newPath + "/" + location_data.name;
             }
             var payload = { path: path, new_path: new_path };
-            this.changePath(payload);
+            this.changePath(payload, 'move');
         },
-        changePath: function(payload){
+        changePath: function(payload, actionType){
             payload.new_path = payload.new_path.replaceAll("//", "/");
             console.log(payload);
+            var id = this.$store.getters.createId(payload.new_path);
+            this.$store.commit("setActivityMessage", { 
+                id : id, 
+                text: `${actionType == 'move' ? 'Moving ' : 'Renaming'} \'${payload.path}\' to \'${payload.new_path}\'`, 
+                status: 'incomplete'
+            } );
             this.$store.dispatch('move', payload).then((response) => {
                 console.log(response);
+                this.$store.commit("setActivityMessage", { 
+                    id : id, 
+                    text: `${actionType == 'move' ? 'Moved ' : 'Renamed'} \'${payload.path}\' to \'${payload.new_path}\'`, 
+                    status: 'success'
+                } );
                 router.push({path: payload.new_path}).catch(err => { console.log(err)});
                 this.$root.$emit('refresh-sidebar');
                 this.$root.$emit('updated-content');
-            }).catch(err => { console.log(err)});
+            }).catch(err => { 
+                console.log(err);
+                this.$store.commit("setActivityMessage", { 
+                    id : id, 
+                    text: `Error ${actionType == 'move' ? 'moving ' : 'renaming'} \'${payload.path}\' to \'${payload.new_path}\'`, 
+                    status: 'error',
+                    error: err
+                } );
+            });
         }
     },
     computed: {

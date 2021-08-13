@@ -5,7 +5,7 @@
             aria-live="assertive" aria-atomic="true" style="background-color: rgb(55, 60, 63);"
             :class="getBgTag(msg.status)">
             <div class="d-flex text-white">
-                <div class="toast-body">
+                <div class="toast-body text-break">
                     <div v-show="msg.status == 'incomplete'" class="spinner-border spinner-border-sm" role="status">
                         <span class="visually-hidden"></span>
                     </div>
@@ -14,6 +14,9 @@
                     <span style="padding-left: 8px; vertical-align: text-top;">
                         {{msg.text}}
                     </span>
+                    <div v-show="msg.error != undefined" class="mt-2 pt-2 border-top">
+                        <small>{{msg.error}}</small>
+                    </div>
                 </div>
                 <a class="me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"
                 style="padding-right: 8px; cursor: pointer;" v-on:click="removeMessage(msg)">

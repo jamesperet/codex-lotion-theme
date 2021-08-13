@@ -30,7 +30,7 @@ export default {
     },
     methods: {
         setBreadcrumb: function() {
-            var route = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "").replace("#", "");
+            var route = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "").replace("#", "").replaceAll("%20", " ");
             if(this.current_path == route) return;
             this.breadcrumbs = [];
             console.log("route: " + route);

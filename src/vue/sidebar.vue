@@ -70,15 +70,17 @@ export default {
             }).catch(err => { });
         },
         openSidebarToPath: function() {
-            var link = window.location.href.replace(window.location.host, "").replace("http://", "").replace("https://", "").replace("#", "");
+            var link = this.$store.getters.getLocationCurrent();
             var link_parts = link.split("/");
             //console.log(link_parts);
+            var filtered_parts = []
             for (let a = 0; a < link_parts.length; a++) {
-                if(link_parts[a] == "") {
-                    link_parts.splice(a, 1);
-                    break;
+                if(link_parts[a] != "") {
+                    filtered_parts.push(link_parts[a]);
                 }
             }
+            link_parts = filtered_parts;
+            //console.log(link_parts);
             for (let i = 0; i < this.current_directory.length; i++) {
                 if(link_parts[0] != this.current_directory[i].name){
                     this.current_directory[i].opened = false;
@@ -96,6 +98,7 @@ export default {
                         current_folder = file;
                         base_folder_contents = file.folder_contents;
                         current_index = i;
+                        break;
                     }
                 }
             } 
@@ -113,7 +116,7 @@ export default {
                 }
             });
             // Scroll sidebar to current link
-            var s = link.replace("http://", "").replace("https://", "").replace("#", "").replace("/","").replaceAll("/","-").replaceAll(".", "").replaceAll("%20", "-");
+            var s = this.$store.getters.getId(link);
             if(s.charAt(s.length - 1) == "-") s = s.slice(0, -1);
             s = s.toLowerCase();
             //console.log(s);

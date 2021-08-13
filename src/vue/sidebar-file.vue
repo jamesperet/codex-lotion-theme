@@ -72,7 +72,9 @@ export default {
     },
     computed: {
         isCurrentLocation: function () {
-            return this.current_location == this.content.path;
+            var current_location = this.current_location.replaceAll('%20', ' ');
+            //console.log(`${current_location} == ${this.content.path} (${this.current_location == this.content.path})`)
+            return current_location == this.content.path;
         }
     }
 }

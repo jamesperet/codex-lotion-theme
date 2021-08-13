@@ -24,12 +24,12 @@ const store = new Vuex.Store({
         },
         getLocationCurrent: (state, getters) => () =>{
             var path = window.location.href.replace(window.location.host, "").replace("http://", "")
-                .replace("https://", "").replace("#", "");
+                .replace("https://", "").replace("#", "").replaceAll("%20", " ");
             return path;
         },
         getLocationPath: (state, getters) => () =>{
             var path = window.location.href.replace(window.location.host, "").replace("http://", "")
-                .replace("https://", "").replace("#", "");
+                .replace("https://", "").replace("#", "").replaceAll("%20", " ");
             var f = path.split("/").pop();
             if(f.includes(".")) path = path.replace(f, "");
             return path;
@@ -83,6 +83,12 @@ const store = new Vuex.Store({
         },
         getActivityMessages:  (state, getters) => (file) =>{
             return state.activity_messages;
+        },
+        createId: (state, getters) => (s) =>{
+            s = s.replaceAll("/", "-").replaceAll(".", "-").replaceAll('#', '').replaceAll('--', '-').replaceAll("%20", "-");
+            if(s.charAt(s.length - 1) == "-") s = s.slice(0, -1);
+            s = s.toLowerCase();
+            return s;
         },
         isImage: (state, getters) => (file) =>{
             switch(file.ext.toLowerCase()){

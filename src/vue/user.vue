@@ -48,6 +48,11 @@ export default {
     },
     methods: {
         logout: function(){
+            this.$store.commit("setActivityMessage", { 
+                id : 'loging-out', 
+                text: `Loging out...`, 
+                status: 'incomplete'
+            } );
             var loc = window.location;
             window.location.href = `${loc.protocol}//${loc.host}/logout`;
         }

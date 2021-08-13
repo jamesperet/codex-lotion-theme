@@ -127,16 +127,15 @@ export default {
             //console.log("Pressed save button");
             this.$root.$emit('save-document');
         },
-        testStoreAction: function(){
-            this.$store.dispatch('testAction').then((data) => {
-                console.log(data);
-            })
-        },
         deleteCurrentPath: function(){
+            var vm = this;
             var path = this.$store.getters.getLocationCurrent();
+            var id = this.$store.getters.createId(path);
+            vm.$store.commit("setActivityMessage", { id : id, text: `Deleting \'${path}\'`, status: 'incomplete'} );
             var payload = { path: path };
             this.$store.dispatch('delete', payload).then((response) => {
                 console.log(response);
+                vm.$store.commit("setActivityMessage", { id : id, text: `Deleted \'${path}\'`, status: 'success'} );
                 var current = path.split("/").pop();
                 var newPath = path.replace(current, "");
                 if(path == newPath) newPath = "/";
@@ -145,14 +144,21 @@ export default {
                 router.push({path: newPath}).catch(err => { console.log(err)});
                 this.$root.$emit('refresh-sidebar');
                 this.$root.$emit('updated-content');
-            }).catch(err => { console.log(err)});
+            }).catch(err => { 
+                console.log(err);
+                vm.$store.commit("setActivityMessage", { id : id, text: `Error deleting \'${path}\'`, status: 'error', error : err} );
+            });
         },
         download: function() {
             var path = this.$store.getters.getLocationCurrent();
             var path_data = this.$store.getters.getLocationData(path);
             var path_list = [];
             var title = "";
+            var vm = this;
+            var id = this.$store.getters.createId(path);
+            this.$store.commit("setActivityMessage", { id : id, text: `Downloading \'${path}\'`, status: 'incomplete'} );
             if(path_data.isFile) {
+                vm.$store.commit("setActivityMessage", { id : id, text: `Downloading file \'${path}\'`, status: 'incomplete'} );
                 path_list.push(path_data.folder + path_data.name);
                 title = path_data.name.split('.')[0];
                 console.log(path_data);
@@ -160,15 +166,20 @@ export default {
                 fileDownloadPath += ("/" + path_data.folder + path_data.name).replace('//', '/');
                 fileDownloadPath += '?view=raw';
                 console.log(fileDownloadPath);
-                this.$store.dispatch('download', { url : fileDownloadPath, label: path_data.name})
+                vm.$store.dispatch('download', { url : fileDownloadPath, label: path_data.name})
                 .then((response) => {
                     console.log("Downloading file...");
-                }).catch(err => { console.log(err)});
+                    vm.$store.commit("setActivityMessage", { id : id, text: `Downloading file \'${path}\'`, status: 'success'} );
+                }).catch(err => { 
+                    console.log(err);
+                    vm.$store.commit("setActivityMessage", { id : id, text: `Error downloading file \'${path}\'`, status: 'error', error : err} );
+                });
                 return;
             }
             else {
                 // Current path is folder so add all files and child files into a path list
                 title = path_data.name;
+                vm.$store.commit("setActivityMessage", { id : id, text: `Archiving folder \'${path}\'`, status: 'incomplete'} );
                 var add_paths = function(path_data_list){
                     for (let i = 0; i < path_data_list.length; i++) {
                         const element = path_data_list[i];
@@ -183,8 +194,12 @@ export default {
             var payload = { paths: path_list, title: title};
             this.$store.dispatch('archive', payload).then((response) => {
                 console.log("archiving response:", response);
+                vm.$store.commit("setActivityMessage", { id : id, text: `Downloading archive \'${path}\'.zip`, status: 'success'} );
                 window.location.href = "/" + response.data.archive_path;
-            }).catch(err => { console.log(err)});
+            }).catch(err => { 
+                console.log(err);
+                vm.$store.commit("setActivityMessage", { id : id, text: `Error creating archive for folder \'${path}\'`, status: 'error', error : err} );
+            });
         }
     },
     computed: {
