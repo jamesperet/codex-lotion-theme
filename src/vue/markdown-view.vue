@@ -63,8 +63,10 @@ export default {
                     vm.$store.commit("setLocation", window.location.href);
                     console.log("markdown view location: " +  vm.$store.getters.getLocation());
                 }
-                vm.$refs.editor.clearEditor();
-                vm.$refs.editor.setEditor(vm.content);
+                if(vm.$refs.editor){
+                    vm.$refs.editor.clearEditor();
+                    vm.$refs.editor.setEditor(vm.content);
+                }
             });
         },
         saveDocument: function(){

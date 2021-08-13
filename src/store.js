@@ -218,16 +218,6 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        testAction ({ commit }) {
-            return new Promise((resolve, reject) => {
-                var data = "";
-                setTimeout(() => {
-                    //commit('someMutation')
-                    data = "done!";
-                    resolve(data);
-                }, 1000)
-            })
-        },
         getFileStructure ({commit}) {
             return new Promise((resolve, reject) => {
                 axios.get("/api/routes").then(response => {
@@ -238,6 +228,20 @@ const store = new Vuex.Store({
                     console.log(error);
                     reject(error);
                 });
+            })
+        },
+        fileExists ({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                var link = "http://" + window.location.host + data.path + "?view=exists";
+                console.log("Checking for file " + link);
+                axios.get(link).then(response => {
+                    resolve(response);
+                })
+                .catch(function (error) {
+                    console.log("Error checking for file (" + link + ")");
+                    console.log(error);
+                    reject(error);
+                })
             })
         },
         createFile ({ commit }, data) {

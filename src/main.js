@@ -5,6 +5,7 @@ import store from "./store.js";
 import folderView from './vue/folder-view.vue';
 import markdownView from './vue/markdown-view.vue';
 import fileView from './vue/file-view.vue';
+import imageView from './vue/image-view.vue';
 import errorView from './vue/error-view.vue';
 import breadcrumbs from './vue/breadcrumbs.vue';
 import sidebar from './vue/sidebar.vue';
@@ -22,6 +23,7 @@ new Vue({
         "FolderView"         : folderView,
         "MarkdownView"       : markdownView,
         "FileView"           : fileView,
+        "ImageView"          : imageView,
         "ErrorView"          : errorView,
         "Breadcrumbs"        : breadcrumbs,
         "Sidebar"            : sidebar,
@@ -36,7 +38,7 @@ new Vue({
     router: router,
     data: function () {
             return {  
-                hljs : hljs
+                
         }
     },
     created: function() {
