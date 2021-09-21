@@ -11,7 +11,7 @@
                 style="height: 100%;"
             />
         </div>
-        <div class="col-12" v-show="!show_editor">
+        <div class="col-10" v-show="!show_editor">
             <div v-html="html_content"></div>
         </div>
     </div>
