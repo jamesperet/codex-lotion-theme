@@ -238,7 +238,7 @@ const store = new Vuex.Store({
         },
         fileExists ({ commit }, data) {
             return new Promise((resolve, reject) => {
-                var link = "http://" + window.location.host + data.path + "?view=exists";
+                var link = `${window.location.protocol}//${window.location.host}${data.path}?view=exists`;
                 console.log("Checking for file " + link);
                 axios.get(link).then(response => {
                     resolve(response);
@@ -252,7 +252,7 @@ const store = new Vuex.Store({
         },
         createFile ({ commit }, data) {
             return new Promise((resolve, reject) => {
-                var link = "http://" + window.location.host + data.path + data.filename;
+                var link = `${window.location.protocol}//${window.location.host}${data.path}${data.filename}`;
                 console.log("Creating file " + link);
                 axios.post(link, {file : data.content}).then(response => {
                     resolve(response);
@@ -266,7 +266,7 @@ const store = new Vuex.Store({
         },
         createFolder ({ commit }, data) {
             return new Promise((resolve, reject) => {
-                var link = "http://" + window.location.host + "/api/create_folder";
+                var link = `${window.location.protocol}//${window.location.host}/api/create_folder`;
                 var path = data.path;
                 console.log("Creating folder " + link);
                 axios.post(link, {path : path}).then(response => {
@@ -281,7 +281,7 @@ const store = new Vuex.Store({
         },
         move ({ commit }, data) {
             return new Promise((resolve, reject) => {
-                var link = "http://" + window.location.host + "/api/move";
+                var link = `${window.location.protocol}//${window.location.host}/api/move`;
                 console.log("Moving " + data.path + " => " + data.new_path + "(" + link + ")");
                 axios.post(link, data).then(response => {
                     resolve(response);
@@ -295,7 +295,7 @@ const store = new Vuex.Store({
         },
         delete ({ commit }, data) {
             return new Promise((resolve, reject) => {
-                var link = "http://" + window.location.host + "/api/delete";
+                var link = `${window.location.protocol}//${window.location.host}/api/delete`;
                 var path = data.path;
                 console.log("Deleting " + link);
                 axios.post(link, {path : path}).then(response => {
@@ -310,7 +310,7 @@ const store = new Vuex.Store({
         },
         archive ({ commit }, data) {
             return new Promise((resolve, reject) => {
-                var link = "http://" + window.location.host + "/api/archive";
+                var link = `${window.location.protocol}//${window.location.host}/api/archive`;
                 var file_list = data.paths;
                 var payload = {
                     method: 'post',
