@@ -1,21 +1,20 @@
 <template>
-    <div class="row justify-content-center" style="padding-top: 50px;">
-        <div class="col-9">
-            <!-- <div v-html="module_data"></div>  -->
-            <editor-tip-tap ref="editor"></editor-tip-tap>
-            <!-- <editor-prosemirror ref="editor"></editor-prosemirror> -->
-        </div>
-    </div>
+    <!-- <div v-html="module_data"></div>  -->
+    <!-- <editor-tip-tap ref="editor"></editor-tip-tap> -->
+    <!-- <editor-prosemirror ref="editor"></editor-prosemirror> -->
+    <editor-codemirror ref="editor"></editor-codemirror>
 </template>
 
 <script>
 //import editorProsemirror from "./editor-prosemirror.vue";
-import editorTipTap from "./editor-tiptap.vue";
+//import editorTipTap from "./editor-tiptap.vue";
+import editorCodemirror from './editor-codemirror.vue';
 export default {
     name: "MarkdownView",
     components: { 
         //EditorProsemirror : editorProsemirror,
-        EditorTipTap : editorTipTap ,
+        //EditorTipTap : editorTipTap,
+        EditorCodemirror : editorCodemirror,
     },
     data: function () {
         return {

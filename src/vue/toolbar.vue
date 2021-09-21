@@ -12,6 +12,16 @@
             <i class="fas fa-save"></i>
         </a>
 
+        <a class="badge-link" v-show="show_edit" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" 
+            title="edit" v-on:click="editDocument()">
+            <i class="fas fa-pencil-alt"></i>
+        </a>
+
+        <a class="badge-link" v-show="show_view" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" 
+            title="view" v-on:click="viewDocument()">
+            <i class="fas fa-eye"></i>
+        </a>
+
         <div class="dropdown" style="display: inline;">
             <a class="badge-link" id="dropdownUser1" data-bs-toggle="dropdown" 
                 aria-expanded="false">
@@ -91,13 +101,20 @@ export default {
     data: function () {
         return {
             current_location : '',
-            show_save : false
+            show_save : false,
+            show_view : false,
+            show_edit : false,
+
         }
     },
     props: [],
     created: function() {
         this.$root.$on('show-save', this.showSave);
         this.$root.$on('hide-save', this.hideSave);
+        this.$root.$on('show-view', this.showView);
+        this.$root.$on('hide-view', this.hideView);
+        this.$root.$on('show-edit', this.showEdit);
+        this.$root.$on('hide-edit', this.hideEdit);
         // Enable Bootstrap tooltips
         this.$nextTick(function () {
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -109,6 +126,10 @@ export default {
     beforeDestroy: function() {
         this.$root.$off('show-save', this.showSave);
         this.$root.$off('hide-save', this.hideSave);
+        this.$root.$off('show-view', this.showView);
+        this.$root.$off('hide-view', this.hideView);
+        this.$root.$off('show-edit', this.showEdit);
+        this.$root.$off('hide-edit', this.hideEdit);
     },
     updated: function() {
         
@@ -117,15 +138,21 @@ export default {
         
     },
     methods: {
-        showSave: function(){
-            this.show_save = true;
-        },
-        hideSave: function(){
-            this.show_save = false;
-        },
+        showSave: function(){ this.show_save = true; },
+        hideSave: function(){ this.show_save = false; },
+        showView: function(){ this.show_view = true; },
+        hideView: function(){ this.show_view = false; },
+        showEdit: function(){ this.show_edit = true; },
+        hideEdit: function(){ this.show_edit = false; },
         saveDocument: function(){
             //console.log("Pressed save button");
             this.$root.$emit('save-document');
+        },
+        viewDocument: function(){
+            this.$root.$emit('view-document');
+        },
+        editDocument: function(){
+            this.$root.$emit('edit-document');
         },
         deleteCurrentPath: function(){
             var vm = this;

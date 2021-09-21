@@ -1,6 +1,10 @@
 <template>
-    <div id="TiptapEditor">
-        <editor-content :editor="editor" id="editor"></editor-content>
+    <div class="row justify-content-center" style="padding-top: 50px;">
+        <div class="col-9">
+            <div id="TiptapEditor">
+                <editor-content :editor="editor" id="editor"></editor-content>
+            </div>
+        </div>
     </div>
 </template>
 

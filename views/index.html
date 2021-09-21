@@ -249,15 +249,15 @@
     </style>
   </head>
   <body>
-    <div id="app">
+    <div id="app" class="">
         <main class="container-fluid">
             <div class="row">
                 <div class="col-2 vh-100 text-white sticky-top" id="sticky-sidebar">
                     <sidebar></sidebar>
                 </div>
                 <div class="col-10">
-                    <div class="container-fluid" style="position: fixed; top: 0; padding-left: 0; margin-left: -12px;">
-                        <nav class="navbar navbar-expand-md navbar-dark bg-dark" style="margin-left: 12px; margin-right: 12px;">
+                    <div class="container-fluid" style="position: fixed; top: 0; padding-left: 0; margin-left: -12px; z-index: 10;">
+                        <nav class="navbar navbar-expand-md navbar-dark bg-dark" style="padding-left: 12px; margin-right: 12px;">
                             <breadcrumbs></breadcrumbs>
                             <toolbar></toolbar>
                         </nav>
@@ -282,6 +282,17 @@
     <script src="/bundle.js"></script>
 
     <script type="text/javascript"></script> 
-
+    
+    <style>
+        .CodeMirror, .cm-s-base16-dark {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            overflow: scroll;
+            padding-top: 50px;
+            margin-top: -50px;
+        }
+    </style>
+    <link href="/tomorrow-night.css" rel="stylesheet">
   </body>
 </html>
