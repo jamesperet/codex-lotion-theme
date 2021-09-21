@@ -9,10 +9,12 @@ class LotionTheme {
         this.config = config;
         this.module_name = "Lotion Theme";
         this.spa_mode = true;
-        if(configTool.has('modules_path')){
-          this.modules_path = configTool.get('modules_path');
+        if(config.modules_path != undefined){
+          this.modules_path = config.modules_path;
+          console.log(`> Using custom modules_path: \'${this.modules_path}\'`);
         } else {
-          this.modules_path = "node_modules/";
+          this.modules_path = "node_modules";
+          console.log(`> Using default modules_path: \'${this.modules_path}\'`);
         }
     }
 
