@@ -1,6 +1,6 @@
 {
   "name": "@jamesperet/codex-lotion-theme",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A notion based theme for @jamesperet/codex-server",
   "main": "index.js",
   "scripts": {

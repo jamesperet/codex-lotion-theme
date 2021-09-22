@@ -246,6 +246,32 @@
             display: block;
             object-fit: scale-down;
         }
+        p img { width: 100%; }
+        blockquote {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            padding-inline-start: 20px;
+            margin-inline-end: 40px;
+            font-size: 1.25rem;
+            border-left: rgba(235, 235, 235, 1) 2px solid;
+            margin-inline-start: 8px;
+        }
+        p code {
+            background-color: #42484c;
+            border-radius: 3px;
+            font-family: courier, monospace;
+            padding: 1px 3px;
+            color: white;
+        }
+        pre code {
+            display: block;
+            background-color: #42484c;
+            border-radius: 3px;
+            font-family: courier, monospace;
+            padding: 1px 3px;
+            color: white;
+        }
     </style>
   </head>
   <body>
@@ -292,7 +318,38 @@
             padding-top: 50px;
             margin-top: -50px;
         }
+        .CodeMirror-wrap pre {
+            word-break: break-word;
+        }
     </style>
     <link href="/tomorrow-night.css" rel="stylesheet">
+    <style>
+        .CodeMirror, .cm-s-base16-dark {
+            height: 100%;
+            width: auto;
+            position: absolute;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        p code {
+            background-color: #42484c;
+            border-radius: 3px;
+            font-family: courier, monospace;
+            padding: 1px 3px;
+            color: #abb2bf;
+        }
+        pre code {
+            display: block;
+            background-color: #42484c;
+            border-radius: 3px;
+            font-family: courier, monospace;
+            padding: 1em;
+            color: white;
+        }
+        .hljs {
+            color: #abb2bf;
+            background: #42484c;
+        }
+    </style>
   </body>
 </html>

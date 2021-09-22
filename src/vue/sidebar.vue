@@ -1,12 +1,12 @@
 <template>
     <div class="sidebar d-flex flex-column" style="height: 100%;">
-        <a href="/" class="d-flex align-items-center text-white text-decoration-none" 
+        <a v-show="codex_title != undefined" href="/" class="d-flex align-items-center text-white text-decoration-none" 
             style="padding: 13px 12px 8px 16px;">
             <span class="fa-stack fa-2x">
                 <i class="fas fa-square fa-stack-2x" style="color: gray"></i>
                 <i class="fas fa-book fa-stack-1x"></i>
             </span>
-            <span class="fs-7 text-truncate" style="margin-top: -2px;">James Peret's Codex</span>
+            <span class="fs-7 text-truncate" style="margin-top: -2px;">{{codex_title}}</span>
         </a>
         <div class="divider-text" style="margin-top: 4px;">FILES</div>
         <div class="list-group list-group-flush flex-shrink-0">
@@ -29,12 +29,18 @@ export default {
         return {
             current_directory : [],
             current_path : undefined,
-            refresh_view : false
+            refresh_view : false,
+            codex_title : undefined
         }
     },
     created: function() {
         this.$root.$on('updated-sidebar', this.getCurrentDirectory);
         this.$root.$on('refresh-sidebar', this.refreshView);
+        var vm = this;
+        this.$store.dispatch('getCodexTitle').then(() => {
+            vm.codex_title = vm.$store.getters.getAbout();
+            console.log("Received title!", vm.codex_title);
+        });
     },
     beforeDestroy: function() {
         this.$root.$off('updated-sidebar', this.getCurrentDirectory);

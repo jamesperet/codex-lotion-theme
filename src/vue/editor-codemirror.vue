@@ -25,6 +25,7 @@ import showdown from 'showdown';
 import { codemirror } from 'vue-codemirror'
 // import base style
 import 'codemirror/lib/codemirror.css'
+import hljs from 'highlight.js';
 export default {
     name: "CodeMirrorEditor",
     components: {
@@ -44,7 +45,8 @@ export default {
                 lineNumbers: true,
                 line: true,
                 viewportMargin: Infinity,
-                fixedGutter: false
+                fixedGutter: false,
+                lineWrapping: true
                 // more CodeMirror options...
             }
         }
@@ -73,16 +75,29 @@ export default {
             this.content = markdown_content;
             this.old_content = markdown_content;
             this.html_content = this.convertMarkdownToHtml(markdown_content);
-            this.$nextTick (() => { this.show_editor = false; });
+            this.$nextTick (() => { 
+                this.show_editor = false; 
+                this.$nextTick (() => { 
+                    document.querySelectorAll('pre code').forEach((el) => {
+                        hljs.highlightElement(el);
+                    });
+                });
+            });
             this.$root.$emit('hide-save');
             this.$root.$emit('show-edit');
             this.$root.$emit('hide-view');
+            
         },
         viewDocument: function() {
             this.html_content = this.convertMarkdownToHtml(this.content);
             this.show_editor = false;
             this.$root.$emit('hide-view');
             this.$root.$emit('show-edit');
+            this.$nextTick (() => { 
+                document.querySelectorAll('pre code').forEach((el) => {
+                    hljs.highlightElement(el);
+                });
+            });
         },
         editDocument: function() {
             this.show_editor = true;
@@ -129,3 +144,7 @@ export default {
     }
 }
 </script>
+
+<style>
+
+</style>

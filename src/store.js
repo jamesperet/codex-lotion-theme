@@ -10,7 +10,8 @@ const store = new Vuex.Store({
         root : [],
         error : false,
         user : undefined,
-        activity_messages : []
+        activity_messages : [],
+        about : undefined
     },
     getters: {
         showError: (state, getters) => () =>{
@@ -18,6 +19,9 @@ const store = new Vuex.Store({
         },
         getUser: (state, getters) => () =>{
             return state.user;
+        },
+        getAbout: (state, getters) => () =>{
+            return state.about;
         },
         getLocation: (state, getters) => () =>{
             return state.current_location;
@@ -206,6 +210,9 @@ const store = new Vuex.Store({
         setUser (state, user) {
             state.user = user;
         },
+        setAbout (state, about) {
+            state.about = about;
+        },
         setActivityMessage (state, message){
             for (let i = 0; i < state.activity_messages.length; i++) {
                 const msg = state.activity_messages[i];
@@ -357,6 +364,18 @@ const store = new Vuex.Store({
                 .then(response => {
                     commit("setUser", response.data.user);
                     resolve();
+                }).catch((err) => {
+                    console.log(err);
+                    reject();
+                });
+            });
+        },
+        getCodexTitle ({ commit }) {
+            return new Promise((resolve, reject) => {
+                axios.get('/api/about')
+                .then(response => {
+                    commit("setAbout", response.data.about);
+                    resolve(response.data.about);
                 }).catch((err) => {
                     console.log(err);
                     reject();
